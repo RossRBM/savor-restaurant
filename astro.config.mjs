@@ -28,9 +28,9 @@ export default defineConfig({
 		},
 		{
 			provider: fontProviders.google(),
-			name: "Manrope",
-			cssVariable: "--font-body",
-			weights: [400, 500, 600, 700, 800],
+			name: "Lexend Zetta",
+			cssVariable: "--font-ui",
+			weights: [400, 500, 600, 700],
 			fallbacks: ["sans-serif"],
 		},
 	],

@@ -1,0 +1,52 @@
+---
+import Base from "../layouts/Base.astro";
+import { savorSite } from "../data/savor";
+---
+
+<Base
+	title="Privacy Policy - Savor Restaurant"
+	description="Privacy policy information for Savor Restaurant."
+	image={savorSite.awardsBackground}
+	pageClass="page-inner"
+>
+	<section class="page-hero-band" style={`background-image: url('${savorSite.awardsBackground}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<div class="section-title-block section-title-block--light section-title-block--center">
+				<h1>Privacy Policy</h1>
+			</div>
+		</div>
+	</section>
+
+	<section class="generic-page">
+		<div class="container">
+			<div class="generic-page__body">
+				<p>
+					Savor Restaurant respects your privacy. If you contact us through email, reservation
+					platforms, or third-party ordering systems, we use the information you provide only to
+					respond to your inquiry, manage your reservation or order, and improve guest service.
+				</p>
+				<p>
+					Reservation and online ordering services are operated by third-party providers. Their
+					data practices are governed by their own privacy policies, so please review those
+					providers directly when using external booking or ordering links from this website.
+				</p>
+				<p>
+					We may collect basic technical information such as browser type, device information, and
+					general usage trends to understand how visitors use the website and to keep the site
+					functioning properly.
+				</p>
+				<p>
+					If you would like to ask a question about personal information connected to an inquiry,
+					reservation, or event request, contact us at
+					{" "}
+					<a href={savorSite.emailHref}>{savorSite.email}</a>
+					{" "}
+					or call
+					{" "}
+					<a href={savorSite.phoneHref}>{savorSite.phoneDisplay}</a>.
+				</p>
+			</div>
+		</div>
+	</section>
+</Base>

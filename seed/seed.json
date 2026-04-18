@@ -8,7 +8,7 @@
 	},
 	"settings": {
 		"title": "Savor Restaurant",
-		"tagline": "Somerville fine dining, private events, and takeout catering"
+		"tagline": "Intimate and Sophisticated Italian Style Setting for Lunch, Dinner, and Private Event Venue."
 	},
 	"collections": [
 		{
@@ -131,12 +131,12 @@
 			"label": "Primary Navigation",
 			"items": [
 				{ "type": "custom", "label": "Home", "url": "/" },
-				{ "type": "custom", "label": "Private Events", "url": "/privateeventvenu/" },
+				{ "type": "custom", "label": "Catering", "url": "/cateringeventvenue/" },
 				{ "type": "custom", "label": "Corporate Events", "url": "/businessprivateeventvenue/" },
-				{ "type": "custom", "label": "Bridal Showers", "url": "/bridal-shower-and-rehearsal-private-event-venue/" },
+				{ "type": "custom", "label": "Reservations", "url": "https://resy.com/cities/svl/savor-restaurant" },
 				{ "type": "custom", "label": "Menu", "url": "/savorrestaurantmenu/" },
-				{ "type": "custom", "label": "Delivery", "url": "/delivery-menu/" },
-				{ "type": "custom", "label": "Catering", "url": "/takeout-catering/" }
+				{ "type": "custom", "label": "Order", "url": "https://www.savorrestaurant.say2eat.com/" },
+				{ "type": "custom", "label": "Privacy Policy", "url": "/privacypolicy/" }
 			]
 		}
 	],
@@ -153,11 +153,11 @@
 					"eyebrow": "Est. 2013 • Somerville, New Jersey",
 					"headline": "Fine dining, private events, and fresh Italian American favorites.",
 					"intro": "Savor is a BYOB restaurant in downtown Somerville known for intimate private rooms, warm hospitality, and a menu built around homemade pasta, polished entrees, and dependable event service.",
-					"hero_image": "/images/home/hero.jpg",
+					"hero_image": "/images/lambert/savormain.jpg",
 					"primary_cta_label": "Reservations",
 					"primary_cta_url": "https://resy.com/cities/svl/savor-restaurant",
-					"secondary_cta_label": "Private Events",
-					"secondary_cta_url": "/privateeventvenu/",
+					"secondary_cta_label": "Catering",
+					"secondary_cta_url": "/cateringeventvenue/",
 					"body": [
 						{
 							"_type": "block",
@@ -183,17 +183,17 @@
 				}
 			},
 			{
-				"id": "privateeventvenu",
-				"slug": "privateeventvenu",
+				"id": "cateringeventvenue",
+				"slug": "cateringeventvenue",
 				"status": "published",
 				"data": {
-					"title": "Private Event Venue",
+					"title": "Private BYOB Event Venue & Catering",
 					"template": "Events",
-					"nav_label": "Private Events",
+					"nav_label": "Catering",
 					"eyebrow": "Celebrate at Savor",
 					"headline": "A polished private event venue for showers, birthdays, repasts, and family gatherings.",
 					"intro": "Our experienced team works closely with you to create the right room, menu, and pacing for the occasion.",
-					"hero_image": "/images/events/private-room-hero.jpg",
+					"hero_image": "/images/lambert/eventvenucateringn-1j.png",
 					"primary_cta_label": "Call About Availability",
 					"primary_cta_url": "tel:+19086851975",
 					"secondary_cta_label": "Corporate Events",
@@ -246,8 +246,8 @@
 					"hero_image": "/images/events/corporate-hero.jpg",
 					"primary_cta_label": "Plan a Business Event",
 					"primary_cta_url": "mailto:Cater@savornjrestaurant.com",
-					"secondary_cta_label": "Private Events",
-					"secondary_cta_url": "/privateeventvenu/",
+					"secondary_cta_label": "Catering",
+					"secondary_cta_url": "/cateringeventvenue/",
 					"body": [
 						{
 							"_type": "block",

@@ -1,0 +1,35 @@
+---
+interface Tour {
+	title: string;
+	url: string;
+	description: string;
+}
+
+interface Props {
+	title: string;
+	backgroundImage: string;
+	tours: Tour[];
+}
+
+const { title, backgroundImage, tours } = Astro.props;
+---
+
+<section class="page-hero-band page-hero-band--tall" style={`background-image: url('${backgroundImage}');`}>
+	<div class="parallax-band__overlay"></div>
+	<div class="container page-hero-band__content">
+		<div class="section-title-block section-title-block--light section-title-block--center">
+			<h1>{title}</h1>
+		</div>
+		<div class="tour-grid">
+			{tours.map((tour) => (
+				<article class="tour-card">
+					<h3>{tour.title}</h3>
+					<div class="tour-card__frame">
+						<iframe src={tour.url} title={tour.title} loading="lazy" allowfullscreen />
+					</div>
+					<p>{tour.description}</p>
+				</article>
+			))}
+		</div>
+	</div>
+</section>

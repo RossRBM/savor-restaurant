@@ -1,0 +1,175 @@
+---
+import { getEmDashCollection } from "emdash";
+import LambertAwards from "../components/LambertAwards.astro";
+import Base from "../layouts/Base.astro";
+import {
+	dessertMenuSections,
+	dinnerMenuSections,
+	fallbackAwards,
+	lunchMenuSections,
+	savorSite,
+	sortByOrder,
+	specialsPanels,
+} from "../data/savor";
+
+const { entries: menuEntries } = await getEmDashCollection("menu_items");
+const { entries: awardEntries } = await getEmDashCollection("awards");
+
+const awards = sortByOrder(awardEntries.length ? awardEntries : fallbackAwards);
+const menuItems = sortByOrder(menuEntries);
+
+const groupMenu = (sections: string[]) =>
+	sections
+		.map((section) => ({
+			title: section.replace(/^Lunch /, "").replace(/^Dinner /, ""),
+			items: menuItems.filter(
+				(item) =>
+					item.data.menu_page === "Restaurant Menu" && item.data.section === section,
+			),
+		}))
+		.filter((section) => section.items.length > 0);
+
+const lunchGroups = groupMenu(lunchMenuSections);
+const dinnerGroups = groupMenu(dinnerMenuSections);
+const dessertGroups = groupMenu(dessertMenuSections);
+---
+
+<Base
+	title="Savor Restaurant | Real Food, Made Fresh | Full Menu & Specials"
+	description="Explore Savor's lunch, dinner, dessert, and special event menus."
+	image={savorSite.menuLunchBackground}
+	pageClass="page-inner"
+>
+	<section class="page-hero-band" style={`background-image: url('${savorSite.menuLunchBackground}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<div class="section-title-block section-title-block--light section-title-block--center">
+				<h1>Lunch Menu</h1>
+				<p>Fresh lunch selections served daily in downtown Somerville.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="content-section" id="lunch">
+		<div class="container">
+			<nav class="menu-anchor-nav" aria-label="Menu sections">
+				<a href="#lunch">Lunch</a>
+				<a href="#dinner">Dinner</a>
+				<a href="#dessert">Dessert</a>
+				<a href="#specials">Specials</a>
+			</nav>
+			<div class="menu-column-grid">
+				{lunchGroups.map((group) => (
+					<article class="menu-column">
+						<h5>{group.title}</h5>
+						<ul class="menu-list">
+							{group.items.map(({ data }) => (
+								<li>
+									<div class="menu-list__head">
+										<strong>{data.title}</strong>
+										<span>{[data.price, data.secondary_price].filter(Boolean).join(" / ")}</span>
+									</div>
+									{data.description && <p>{data.description}</p>}
+								</li>
+							))}
+						</ul>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="page-hero-band" id="dinner" style={`background-image: url('${savorSite.menuDinnerBackground}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<div class="section-title-block section-title-block--light section-title-block--center">
+				<h1>Dinner Menu</h1>
+				<p>Italian American favorites, fresh pasta, seafood, and house classics for dinner service.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="triangle-section">
+		<div class="container">
+			<div class="menu-column-grid">
+				{dinnerGroups.map((group) => (
+					<article class="menu-column">
+						<h5>{group.title}</h5>
+						<ul class="menu-list">
+							{group.items.map(({ data }) => (
+								<li>
+									<div class="menu-list__head">
+										<strong>{data.title}</strong>
+										<span>{[data.price, data.secondary_price].filter(Boolean).join(" / ")}</span>
+									</div>
+									{data.description && <p>{data.description}</p>}
+								</li>
+							))}
+						</ul>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="page-hero-band" id="dessert" style={`background-image: url('${savorSite.menuDessertBackground}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<div class="section-title-block section-title-block--light section-title-block--center">
+				<h1>Dessert Menu</h1>
+				<p>Finish the meal with one of Savor's classic desserts and coffee service.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="triangle-section">
+		<div class="container">
+			<div class="menu-column-grid">
+				{dessertGroups.map((group) => (
+					<article class="menu-column">
+						<h5>{group.title}</h5>
+						<ul class="menu-list">
+							{group.items.map(({ data }) => (
+								<li>
+									<div class="menu-list__head">
+										<strong>{data.title}</strong>
+										<span>{[data.price, data.secondary_price].filter(Boolean).join(" / ")}</span>
+									</div>
+									{data.description && <p>{data.description}</p>}
+								</li>
+							))}
+						</ul>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="content-section" id="specials">
+		<div class="container">
+			<div class="callout-strip">PRIVATE EVENTS &amp; TAKE OUT | INQUIRE NOW</div>
+			<div class="section-title-block section-title-block--center" style="margin-top: 2rem;">
+				<h4>Special Menus and Holiday Features</h4>
+				<p>
+					Specials rotate regularly at Savor. Call ahead for today's features, holiday menus, and
+					large-party availability.
+				</p>
+			</div>
+			<div class="specials-grid">
+				{specialsPanels.map((panel) => (
+					<article class="special-card">
+						<h3>{panel.title}</h3>
+						<p>{panel.body}</p>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<LambertAwards
+		awards={awards}
+		backgroundImage={savorSite.awardsBackground}
+		headline="Voted Best Fine Dining in Somerset County"
+		subheadline="Voted Best BYOB and Banquet Facility in Somerset County"
+	/>
+</Base>

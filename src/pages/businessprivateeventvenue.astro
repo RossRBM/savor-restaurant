@@ -4,6 +4,7 @@ import LambertAwards from "../components/LambertAwards.astro";
 import VenueTours from "../components/VenueTours.astro";
 import Base from "../layouts/Base.astro";
 import {
+	businessHighlights,
 	eventVenueCopy,
 	fallbackAwards,
 	savorSite,
@@ -17,14 +18,43 @@ const awards = sortByOrder(awardEntries.length ? awardEntries : fallbackAwards);
 ---
 
 <Base
-	title="Private BYOB Event Venue & Catering | Savor Restaurant"
-	description="Choose from intimate private rooms, event menus, and BYOB hospitality for showers, repasts, birthdays, rehearsal dinners, and more."
-	image={savorSite.cateringBackground}
+	title="Corporate & Business Private Event Venue | Savor Restaurant"
+	description="Host business dinners, client gatherings, and company celebrations in Savor's private rooms in downtown Somerville."
+	image={savorSite.corporateBackground}
 	pageClass="page-inner"
 >
+	<section class="content-section">
+		<div class="container content-grid">
+			<div class="content-stack">
+				{businessHighlights.map((item) => (
+					<article class="content-card">
+						<h3>{item.title}</h3>
+						<p>{item.body}</p>
+					</article>
+				))}
+			</div>
+
+			<div class="video-card">
+				<iframe
+					src="https://www.youtube.com/embed/8BrFgjtiSAw"
+					title="Discover fine dining and flawless event experiences at Savor Restaurant"
+					loading="lazy"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					allowfullscreen
+				/>
+			</div>
+		</div>
+	</section>
+
+	<section class="content-section">
+		<div class="container">
+			<div class="callout-strip">PRIVATE EVENTS &amp; TAKE OUT | INQUIRE NOW</div>
+		</div>
+	</section>
+
 	<VenueTours
 		title="Choose from three rooms holding between 14 and 80 people"
-		backgroundImage={savorSite.cateringBackground}
+		backgroundImage={savorSite.corporateBackground}
 		tours={venueTours}
 	/>
 
@@ -39,7 +69,7 @@ const awards = sortByOrder(awardEntries.length ? awardEntries : fallbackAwards);
 				))}
 				<p>
 					<a class="button-link button-link--accent" href={savorSite.emailHref}>
-						Inquire About Private Events
+						Plan a Corporate Event
 					</a>
 				</p>
 			</div>
@@ -51,12 +81,6 @@ const awards = sortByOrder(awardEntries.length ? awardEntries : fallbackAwards);
 					</div>
 				))}
 			</div>
-		</div>
-	</section>
-
-	<section class="content-section">
-		<div class="container">
-			<div class="callout-strip">PRIVATE EVENTS &amp; TAKE OUT | INQUIRE NOW</div>
 		</div>
 	</section>
 

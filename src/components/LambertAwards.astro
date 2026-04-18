@@ -1,0 +1,46 @@
+---
+interface AwardEntry {
+	data: {
+		title?: string;
+		image_url?: string;
+		link_url?: string;
+	};
+}
+
+interface Props {
+	awards: AwardEntry[];
+	backgroundImage: string;
+	headline: string;
+	subheadline: string;
+}
+
+const { awards, backgroundImage, headline, subheadline } = Astro.props;
+---
+
+<section class="parallax-band awards-band" style={`background-image: url('${backgroundImage}');`}>
+	<div class="parallax-band__overlay"></div>
+	<div class="container parallax-band__content">
+		<div class="section-title-block section-title-block--light">
+			<h4>{headline}</h4>
+			<p>{subheadline}</p>
+		</div>
+		<div class="awards-band__grid">
+			{awards.map(({ data }) => {
+				const image = data.image_url || "";
+				const content = (
+					<div class="awards-band__badge">
+						<img src={image} alt={data.title || "Award"} loading="lazy" />
+					</div>
+				);
+
+				return data.link_url ? (
+					<a href={data.link_url} target="_blank" rel="noreferrer" aria-label={data.title}>
+						{content}
+					</a>
+				) : (
+					content
+				);
+			})}
+		</div>
+	</div>
+</section>

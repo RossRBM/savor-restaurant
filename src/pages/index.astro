@@ -1,23 +1,16 @@
 ---
 import { getEmDashCollection } from "emdash";
-import LambertAwards from "../components/LambertAwards.astro";
 import Base from "../layouts/Base.astro";
 import {
-	easterFeature,
 	fallbackAwards,
 	fallbackTeamMembers,
 	fallbackTestimonials,
 	homeAboutCopy,
 	homeAboutRestaurant,
-	homeEventIntro,
-	homeFoodSlides,
 	homeHeroLinks,
-	homeInstagramPosts,
 	homeTeamIntro,
-	menuSpecialCourses,
 	savorSite,
 	sortByOrder,
-	socialLinks,
 } from "../data/savor";
 
 const { entries: awardEntries } = await getEmDashCollection("awards");
@@ -31,247 +24,623 @@ const testimonials = sortByOrder(
 const teamMembers = sortByOrder(
 	teamEntries.length ? teamEntries : fallbackTeamMembers,
 ).slice(0, 4);
+
+const googleReviewUrl = "https://www.google.com/search?q=savor+somerville+nj";
+
+const eventGallery = [
+	{
+		src: "/images/live/private-event-restaurant.jpg",
+		alt: "Private event dining room at Savor Restaurant",
+		large: true,
+	},
+	{
+		src: "/images/live/catering-private-event-venue.jpg",
+		alt: "Catering and private event setup at Savor Restaurant",
+	},
+	{
+		src: "/images/lambert/eventvenucateringnj.png",
+		alt: "Private room venue at Savor Restaurant",
+	},
+	{
+		src: "/images/lambert/savor-1-8.jpg",
+		alt: "Dining room details at Savor Restaurant",
+	},
+];
+
+const homepageTeamCards = teamMembers.map(({ data }, index) => ({
+	image: data.image_url,
+	title: index === 3 ? "Friendly" : data.title || "Savor Team",
+	role: data.role.toUpperCase(),
+}));
+
+const instagramPosts = [
+	{
+		image: "/images/live/instagram/post-1.jpg",
+		url: "https://www.instagram.com/p/DWeP8FrjAW2/",
+		caption:
+			"Artichoke Hearts Francaise, stop in tonight and start your meal right.\n\nLove them even more? Enjoy them again this Easter as part of our special menu.\nView the full menu online and reserve your table before it’s gone: (908) 685-1975",
+		likes: 0,
+		comments: 0,
+	},
+	{
+		image: "/images/live/instagram/post-2.jpg",
+		url: "https://www.instagram.com/p/DWZNUszjEO-/",
+		caption:
+			"Craving pasta AND seafood… this is it. Zuppa Di Pesce is packed with clams, mussels, scallops, shrimp, and squid ink linguini.\n\nTry it tonight, then come back Easter—it’s on the menu!\nCall (908) 685-1975 to reserve",
+		likes: 0,
+		comments: 0,
+	},
+	{
+		image: "/images/live/instagram/post-3.jpg",
+		url: "https://www.instagram.com/p/DWVBx3TvoM5/",
+		caption:
+			"Easter plans start here. Join us at Savor for a special holiday menu built around classic Italian-American favorites.\n\nReservations are required. Call now to secure your table before it’s too late: (908) 685-1975",
+		likes: 0,
+		comments: 0,
+	},
+	{
+		image: "/images/live/instagram/post-4.jpg",
+		url: "https://www.instagram.com/p/DWOv8Y4DG9O/",
+		caption:
+			"This is how it’s done.\n\nA perfectly grilled center-cut pork chop. Make it part of your Easter celebration at Savor, open 12-8 pm (last seating 6:30 PM).\n#easterdinner #eastersunday #savorsomerville #somervilleeaster",
+		likes: 2,
+		comments: 0,
+	},
+	{
+		image: "/images/live/instagram/post-5.jpg",
+		url: "https://www.instagram.com/p/DWKokIbAlSI/",
+		caption:
+			"Fresh pasta, good company, and a plate of our purple heirloom potato gnocchi, the kind of meal Sundays were made for.\n\n#gnoochi #sundaypasta #savornj #somervillenj",
+		likes: 1,
+		comments: 0,
+	},
+	{
+		image: "/images/live/instagram/post-6.jpg",
+		url: "https://www.instagram.com/p/DWJOI9gjGH1/",
+		caption:
+			"Feed the whole table for less.\n\nSavor’s group takeout package is now $79 (was $99). Limited time only.",
+		likes: 0,
+		comments: 0,
+	},
+	{
+		image: "/images/live/instagram/post-7.jpg",
+		url: "https://www.instagram.com/p/DWHE1wzDP_9/",
+		caption:
+			"Che buono! That first spoonful of gelato says it all. The perfect ending to dinner at Savor.\n\n18 West Main Street, Somerville NJ\n\n#gelato #bestgelatonj #sommervillenj",
+		likes: 2,
+		comments: 0,
+	},
+	{
+		image: "/images/live/instagram/post-8.jpg",
+		url: "https://www.instagram.com/p/DWCp9FvghI9/",
+		caption:
+			"Order Savor takeout and enjoy our Italian-American food even if you’re in the mood to stay in.\n\nReminder: For a limited time, our group takeout package is now just $79.\n\nPickup and delivery available: savornjrestaurant.com/delivery-menu",
+		likes: 0,
+		comments: 0,
+	},
+];
 ---
 
 <Base
 	title="Savor Restaurant | Somerville NJ | Voted Best BYOB | Open Daily"
 	description={savorSite.tagline}
 	image={savorSite.homeHero}
-	pageClass="page-home"
+	pageClass="page-home page-home-live"
 >
-	<section class="live-hero" style={`background-image: url('${savorSite.homeHero}');`}>
-		<div class="container live-hero__content">
-			<p class="live-hero__kicker">Somerville NJ</p>
-			<h1 class="live-hero__title">Savor Restaurant</h1>
-			<p class="live-hero__subtitle">{savorSite.tagline}</p>
-			<div class="hero-actions">
-				{homeHeroLinks.map((item) => (
-					<a
-						class:list={["live-button", item.label === "ORDER NOW" && "live-button--ghost"]}
-						href={item.url}
-						target={item.target}
-						rel={item.target === "_blank" ? "noreferrer" : undefined}
-					>
-						{item.label}
-					</a>
-				))}
-			</div>
-			<div class="hero-actions" style="margin-top: 1rem;">
-				{socialLinks.map((item) => (
-					<a href={item.url} target="_blank" rel="noreferrer" aria-label={item.label}>
-						<i class={`${item.icon} fa-lg`} aria-hidden="true"></i>
-					</a>
-				))}
-			</div>
-		</div>
-	</section>
-
-	<section class="live-section">
-		<div class="container live-split">
-			<div class="live-copy">
-				<p class="live-tagline">Private Events</p>
-				<div class="section-title-block">
-					<h2>{homeEventIntro.title}</h2>
-					<p>{homeEventIntro.lead}</p>
-				</div>
-				<p class="live-highlight">{homeEventIntro.highlight}</p>
-				{homeEventIntro.body.map((paragraph) => (
-					<p>{paragraph}</p>
-				))}
-				<div class="live-actions" style="justify-content: flex-start;">
-					<a class="live-button" href="/privateeventvenu/">
-						Private Event Venue
-					</a>
-					<a class="live-button live-button--dark" href="/takeout-catering/">
-						Takeout Catering
-					</a>
-				</div>
-			</div>
-
-			<div class="live-split__image">
-				<img src={homeEventIntro.image} alt="Private event venue at Savor Restaurant" loading="eager" />
-			</div>
-		</div>
-	</section>
-
-	<LambertAwards
-		awards={awards}
-		backgroundImage={savorSite.awardsBackground}
-		headline="Voted Best Fine Dining in Somerset County"
-		subheadline="Voted Best BYOB in Somerset County"
-	/>
-
-	<section class="live-section live-section--cream">
-		<div class="container live-split live-split--reverse">
-			<div class="live-copy">
-				<p class="live-tagline">Menu</p>
-				<div class="section-title-block">
-					<h2>Real Food, Made Fresh</h2>
-				</div>
-				{homeAboutCopy.map((paragraph) => (
-					<p>{paragraph}</p>
-				))}
-				<div class="live-actions" style="justify-content: flex-start;">
-					<a class="live-button" href="/savorrestaurantmenu/">
-						View Full Lunch and Dinner Menus
-					</a>
-				</div>
-			</div>
-
-			<div class="live-split__image">
-				<img src={homeFoodSlides[0].src} alt={homeFoodSlides[0].alt} loading="lazy" />
-			</div>
-		</div>
-	</section>
-
-	<section class="live-section">
-		<div class="container">
-			<div class="live-special-feature">
-				<div class="live-special-feature__image">
-					<img src={easterFeature.image} alt="Savor Easter reservations artwork" loading="lazy" />
-				</div>
-				<div class="live-special-feature__card">
-					<p class="live-special-feature__eyebrow">{easterFeature.eyebrow}</p>
-					<h2>{easterFeature.title}</h2>
-					<ul class="live-special-feature__details">
-						{easterFeature.details.map((item) => (
-							<li>{item}</li>
-						))}
-					</ul>
-					<div class="live-actions" style="justify-content: flex-start;">
+	<section id="sec1" class="content lambert_sec lambert_hero_sec full-height hero-content">
+		<div class="home-smart-hero" style={`background-image: url('${savorSite.homeHero}');`}>
+			<div class="home-smart-hero__overlay"></div>
+			<div class="container home-smart-hero__inner">
+				<img
+					class="home-smart-hero__logo"
+					src="/images/live/savorsomervillenbyobj1.png"
+					alt="Savor Restaurant"
+					width="800"
+					height="600"
+					fetchpriority="high"
+				/>
+				<p class="home-smart-hero__meta">
+					EST. 2013
+					<br />
+					SOMERVILLE NEW JERSEY
+				</p>
+				<div class="home-smart-hero__actions">
+					{homeHeroLinks.map((item) => (
 						<a
-							class="live-button"
-							href={easterFeature.button.url}
-							target={easterFeature.button.target}
-							rel={easterFeature.button.target === "_blank" ? "noreferrer" : undefined}
+							class="live-button live-button--ghost"
+							href={item.url}
+							target={item.target}
+							rel={item.target === "_blank" ? "noreferrer" : undefined}
 						>
-							{easterFeature.button.label}
+							{item.label}
 						</a>
-						<a class="live-button live-button--dark" href={savorSite.phoneHref}>
-							Call {savorSite.phoneDisplay}
-						</a>
+					))}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="sec2" class="content lambert_sec lambert_row_sec home-section home-section--event">
+		<div class="container">
+			<div class="home-event-grid">
+				<div class="home-event-grid__copy">
+					<div class="section-title">
+						<h4 id="cater" style="text-align: center;">
+							<a href="/privateeventvenu/">Host Your Next Event</a>
+							<br />
+							at Savor Restaurant
+						</h4>
+					</div>
+					<div class="clearfix"></div>
+					<div class="wpb_text_column wpb_content_element" id="cater">
+						<div class="wpb_wrapper">
+							<div style="font-size: 16px; text-transform: none; text-align: left;">
+								<p>
+									Are you planning a special event and looking for the perfect venue to host it?
+									Look no further than Savor, the premier fine dining restaurant serving
+									delicious Italian cuisine.
+								</p>
+							</div>
+							<h1 style="font-size: 16px; text-transform: none; text-align: left; padding-bottom: 10px;">
+								As a private event venue with BYOB, our intimate and sophisticated setting lets
+								you bring your favorite wines and spirits while we handle the rest.
+							</h1>
+							<div style="font-size: 16px; text-transform: none; text-align: left;">
+								Whether it&apos;s a baby shower, baptism, birthday, or corporate meeting, our
+								special catering packages ensure your guests enjoy a truly memorable dining
+								experience. Savor has you covered for all of life&apos;s special moments.
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="home-event-grid__gallery">
+					<div class="home-event-gallery">
+						{eventGallery.map((image) => (
+							<figure class:list={["home-event-gallery__item", image.large && "home-event-gallery__item--large"]}>
+								<img src={image.src} alt={image.alt} loading="lazy" />
+							</figure>
+						))}
+					</div>
+				</div>
+			</div>
+		</div>
+		</section>
+
+		<section class="lambert_sec lambert_page_sec parallax-section parallax-img-bg home-awards-parallax">
+			<div
+				class="bg bg-parallax"
+				style={`background-image: url('${savorSite.awardsBackground}');`}
+				data-top-bottom="transform: translateY(300px);"
+				data-bottom-top="transform: translateY(-300px);"
+			></div>
+			<div class="overlay" style="opacity: 0.5;"></div>
+			<div class="container">
+				<div class="row">
+					<div class="wpb_column vc_column_container vc_col-sm-12">
+						<div class="vc_column-inner">
+							<div class="wpb_wrapper">
+								<div class="parallax-section-title">
+									<h4 style="text-align: center;">
+										<span style="color: #ffffff;">Voted Best Fine Dining in Somerset County</span>
+									</h4>
+									<p>&nbsp;</p>
+									<h4 style="text-align: center;">
+										<span style="color: #ffffff;">Voted Best BYOB and Banquet Facility in Somerset County</span>
+									</h4>
+								</div>
+								<div class="clearfix"></div>
+
+								<div class="vc_row wpb_row vc_inner vc_row-fluid work-time relative home-awards-strip">
+									{awards.map(({ data }) => (
+										<div class="wpb_column vc_column_container vc_col-sm-1/5">
+											<div class="vc_column-inner">
+												<div class="wpb_wrapper">
+													<div class="wpb_single_image wpb_content_element vc_align_center">
+														<figure class="wpb_wrapper vc_figure">
+															{data.link_url ? (
+																<a
+																	href={data.link_url}
+																	target="_blank"
+																	rel="noreferrer"
+																	class="vc_single_image-wrapper vc_box_border_grey"
+																>
+																	<img
+																		decoding="async"
+																		width="150"
+																		height="150"
+																		src={data.image_url}
+																		class="vc_single_image-img attachment-thumbnail"
+																		alt={data.title || "Award"}
+																		loading="lazy"
+																	/>
+																</a>
+															) : (
+																<div class="vc_single_image-wrapper vc_box_border_grey">
+																	<img
+																		decoding="async"
+																		width="150"
+																		height="150"
+																		src={data.image_url}
+																		class="vc_single_image-img attachment-thumbnail"
+																		alt={data.title || "Award"}
+																		loading="lazy"
+																	/>
+																</div>
+															)}
+														</figure>
+													</div>
+												</div>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	<section class="content lambert_sec lambert_triangle_sec home-section">
+		<div class="triangle-decor"></div>
+		<div class="container">
+			<div class="row about-section home-food-grid">
+				<div class="wpb_column vc_column_container vc_col-sm-12 vc_col-md-6">
+					<div class="vc_column-inner">
+						<div class="wpb_wrapper">
+							<div class="single-slider-holder home-food-visual">
+								<img
+									src="/images/lambert/beststeakinNJ.png"
+									alt="Savor Restaurant dishes"
+									width="700"
+									height="438"
+									loading="lazy"
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wpb_column vc_column_container vc_col-sm-12 vc_col-md-6">
+					<div class="vc_column-inner">
+						<div class="wpb_wrapper">
+							<div class="section-title">
+								<h4 class="no-decor-title">Real Food, Made Fresh</h4>
+							</div>
+							<div class="clearfix"></div>
+							<div class="wpb_text_column wpb_content_element">
+								<div class="wpb_wrapper">
+									{homeAboutCopy.map((paragraph) => (
+										<p>{paragraph}</p>
+									))}
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="parallax-band" id="reviews" style={`background-image: url('${savorSite.testimonialsBackground}');`}>
-		<div class="parallax-band__overlay"></div>
-		<div class="container parallax-band__content">
-			<div class="section-title-block section-title-block--light section-title-block--center">
-				<h2>Testimonials</h2>
-			</div>
-			<div class="review-grid">
-				{testimonials.map(({ data }) => (
-					<article class="review-card">
-						<div class="star-row" aria-hidden="true">
-							<span class="fa fa-star"></span>
-							<span class="fa fa-star"></span>
-							<span class="fa fa-star"></span>
-							<span class="fa fa-star"></span>
-							<span class="fa fa-star"></span>
-						</div>
-						<p>"{data.quote}"</p>
-						<h3>{data.title}</h3>
-					</article>
-				))}
-			</div>
-			<p class="reviews-links">
-				More Reviews at{" "}
-				<a href={savorSite.facebookUrl} target="_blank" rel="noreferrer">Facebook</a>,
-				{" "}
-				<a href={savorSite.tripadvisorUrl} target="_blank" rel="noreferrer">Tripadvisor</a>,
-				{" "}
-				and{" "}
-				<a href="https://www.google.com/search?q=savor+somerville+nj" target="_blank" rel="noreferrer">
-					Google
-				</a>
-			</p>
-		</div>
-	</section>
-
-	<section class="live-section live-section--cream">
-		<div class="container">
-			<div class="section-title-block section-title-block--center">
-				<p class="live-tagline">About Savor Restaurant</p>
-				<h2>Expert Service Staff</h2>
-				<p>{homeAboutRestaurant}</p>
-				<p>{homeTeamIntro}</p>
-			</div>
-
-			<div class="team-grid">
-				{teamMembers.map(({ data }) => (
-					<article class="team-card">
-						<img src={data.image_url} alt={data.title || "Savor team member"} loading="lazy" />
-						<div class="team-card__body">
-							<h3>{data.title}</h3>
-							<p class="team-card__role">{data.role}</p>
-							<p>{data.bio}</p>
-						</div>
-					</article>
-				))}
-			</div>
-		</div>
-	</section>
-
-	<section class="live-section">
-		<div class="container">
-			<div class="section-title-block section-title-block--center">
-				<p class="live-tagline">Instagram</p>
-				<h2>From the Dining Room</h2>
-			</div>
-			<div class="live-instagram-grid">
-				{homeInstagramPosts.map((post) => (
-					<article class="instagram-card">
-						<img src={post.image} alt={post.caption} loading="lazy" />
-						<div class="instagram-card__body">
-							<p>{post.caption}</p>
-							<div class="instagram-card__meta">
-								<span>{post.likes} Likes</span>
-								<span>{post.comments} Comments</span>
-							</div>
-						</div>
-					</article>
-				))}
-			</div>
-			<div class="instagram-actions">
-				<a href={savorSite.instagramUrl} target="_blank" rel="noreferrer">
-					Load More
-				</a>
-				<a href={savorSite.instagramUrl} target="_blank" rel="noreferrer">
-					Follow on Instagram
-				</a>
-			</div>
-		</div>
-	</section>
-
-	<section class="live-section live-specials" id="specials">
-		<div class="container">
-			<div class="section-title-block section-title-block--light section-title-block--center">
-				<h2>Father's Day Specials</h2>
+	<section id="reviews" class="content parallax-section lambert_sec lambert_parallax_sec home-reviews-band">
+		<div
+			class="bg bg-parallax"
+			style={`background-image: url('${savorSite.testimonialsBackground}');`}
+			data-top-bottom="transform: translateY(300px);"
+			data-bottom-top="transform: translateY(-300px);"
+		></div>
+		<div class="overlay"></div>
+			<div class="container">
+				<div class="home-easter-callout">
+					<h3>Easter reservations are now open. 🐣</h3>
+					<p>
+						<strong><em>Serving Special Menu</em></strong>
+						<br />
+						Reservations are required. Please call to reserve: <strong>{savorSite.phoneDisplay}</strong>
+						<br />
+						<span style="text-decoration: underline;">We will be open 12:00 PM - 8:00 PM</span>
+						{" "}
+						<span style="text-decoration: underline;">(Last seating at 6:30 PM)</span>
+					</p>
+					<img
+						src="/images/live/Savor-menu-Easter.png"
+						alt="Savor Easter menu"
+						width="567"
+						height="851"
+						loading="lazy"
+					/>
+					<p>Make your reservation now before all seats are gone.</p>
 				<p>
-					Open from Noon to 8:00 on June 18th, 2023
-					<br />
-					(please note this menu is in addition to our regular menu)
+					<a class="home-easter-callout__link" href={savorSite.reservationsUrl} target="_blank" rel="noreferrer">
+						Reservations Required
+					</a>
 				</p>
 			</div>
-			<div class="special-course-grid">
-				{menuSpecialCourses.map((course) => (
-					<article class="special-course-card">
-						<h3>{course.title}</h3>
-						<ul>
-							{course.items.map((item) => (
-								<li>{item}</li>
-							))}
-						</ul>
-					</article>
-				))}
+
+			<div class="parallax-section-title">
+				<h2>TESTIMONIALS</h2>
 			</div>
-			<div class="live-cta-bar">
-				<span>Private Events &amp; Take Out</span>
-				<a href="/privateeventvenu/" data-open-inquiry>Inquire Now</a>
+			<div class="clearfix"></div>
+
+				<div class="home-testimonials" data-home-testimonials>
+					<div class="customNavigation">
+						<a class="prev-slide transition" href="#reviews" aria-label="Previous testimonial" data-dir="-1">
+							<i class="fa fa-long-arrow-left"></i>
+						</a>
+						<a class="next-slide transition" href="#reviews" aria-label="Next testimonial" data-dir="1">
+							<i class="fa fa-long-arrow-right"></i>
+						</a>
+					</div>
+
+					<div class="testimonials-slider home-testimonials__viewport">
+						{testimonials.map(({ data }, index) => (
+							<div class:list={["item", index === 0 && "is-active"]} data-slide>
+								<div class="testi-item">
+									<ul class="star-rating">
+										<li><i class="fa fa-star"></i></li>
+										<li><i class="fa fa-star"></i></li>
+										<li><i class="fa fa-star"></i></li>
+										<li><i class="fa fa-star"></i></li>
+										<li><i class="fa fa-star"></i></li>
+									</ul>
+									<h3>
+										<span style="color: #ffffff;">&#8221; {data.quote} &#8220;</span>
+									</h3>
+									<h4 class="test">
+										<span style="color: #ffffff;">
+											<a
+												style="color: #ffffff; font-family: 'Fraunces';"
+												href={googleReviewUrl}
+												target="_blank"
+												rel="noreferrer"
+											>
+												{data.title === "Kathleen" ? <em>{data.title}</em> : data.title}
+											</a>
+										</span>
+									</h4>
+								</div>
+							</div>
+						))}
+					</div>
+
+				<div class="section-icon">
+					<i class="fa fa-quote-left"></i>
+				</div>
+			</div>
+
+			<div class="wpb_text_column wpb_content_element vc_custom_1678200246157">
+				<div class="wpb_wrapper">
+					<p style="text-align: center;">More Reviews at:</p>
+					<p style="text-align: center;">
+						<span style="color: #ffffff;">
+							<a style="color: #ffffff;" href="https://www.facebook.com/CaterAtSavor/reviews" target="_blank" rel="noreferrer">
+								Facebook
+							</a>
+							{" \u00a0 \u00a0 \u00a0 "}
+							<a style="color: #ffffff;" href={savorSite.tripadvisorUrl} target="_blank" rel="noreferrer">
+								Tripadvisor
+							</a>
+							{" \u00a0 \u00a0 "}
+							<a
+								style="color: #ffffff;"
+								href="https://www.google.com/search?q=savor+somerville+nj"
+								target="_blank"
+								rel="noreferrer"
+							>
+								Google
+							</a>
+						</span>
+					</p>
+				</div>
 			</div>
 		</div>
 	</section>
+
+	<section class="content lambert_sec lambert_triangle_sec home-section">
+		<div class="triangle-decor"></div>
+		<div class="container">
+			<div class="row">
+				<div class="wpb_column vc_column_container vc_col-sm-12">
+					<div class="vc_column-inner">
+						<div class="wpb_wrapper">
+								<div class="wpb_text_column wpb_content_element">
+									<div class="wpb_wrapper">
+										<h4>ABOUT SAVOR RESTAURANT</h4>
+									<p>&nbsp;</p>
+									<p style="text-align: center;">{homeAboutRestaurant}</p>
+									<p>&nbsp;</p>
+									<h4>EXPERT SERVICE STAFF</h4>
+									<p>&nbsp;</p>
+									<div class="inner">
+										<p>{homeTeamIntro}</p>
+									</div>
+									<div class="bold-separator">
+										<span class="no-rep">circle</span>
+										</div>
+									</div>
+								</div>
+
+								<div id="about-team" class="team-links">
+									{homepageTeamCards.map((member) => (
+										<div class="team-item item4">
+											<a href="#about-team">
+												<span class="team-details">More info</span>
+												<img src={member.image} alt={member.title} class="res-image wp-post-image" loading="lazy" />
+												<span class="chefname">{member.title}</span>
+												<span class="chefinfo">{member.role}</span>
+											</a>
+										</div>
+									))}
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div class="clearfix"></div>
+	<section class="home-instagram-band">
+		<div class="container">
+			<div id="sb_instagram" class="sbi sbi_mob_col_1 sbi_tab_col_3 sbi_col_4 sbi_width_resp sbi-theme sbi-default_theme sbi-style-regular">
+				<div class="sb_instagram_header sbi_feed_type_user sbi_medium sbi_no_avatar">
+					<a class="sbi_header_link" target="_blank" rel="nofollow noopener" href={savorSite.instagramUrl} title="@savor_restaurant">
+						<div class="sbi_header_text sbi_no_info sbi_no_bio">
+							<div class="sbi_header_img">
+								<div class="sbi_header_hashtag_icon">
+									<i class="fa fa-instagram" aria-hidden="true"></i>
+								</div>
+							</div>
+							<div class="sbi_feedtheme_header_text">
+								<div class="sbi_feedtheme_title_wrapper">
+									<h3>savor_restaurant</h3>
+									<p class="sbi_bio_info">
+										<span class="sbi_posts_count" aria-label="214 posts">
+											<i class="fa fa-image" aria-hidden="true"></i>
+											214
+										</span>
+									</p>
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+
+				<div id="sbi_images" style="gap: 12px;">
+					{instagramPosts.map((post) => (
+						<div class="sbi_item sbi_type_image sbi_new sbi_transition">
+							<div class="sbi_inner_wrap">
+								<div class="sbi_photo_wrap">
+									<div style="background: rgba(0,0,0,0.85)" class="sbi_link">
+										<div class="sbi_hover_top">
+											<p class="sbi_hover_caption_wrap">
+												<span class="sbi_caption" set:html={post.caption.replaceAll("\n", "<br />")}></span>
+											</p>
+										</div>
+
+										<div class="sbi_hover_bottom">
+											<div class="sbi_meta">
+												<span class="sbi_likes" style="font-size: 13px;">
+													<i class="fa fa-heart" aria-hidden="true"></i>
+													{post.likes}
+												</span>
+												<span class="sbi_comments" style="font-size: 13px;">
+													<i class="fa fa-comment" aria-hidden="true"></i>
+													{post.comments}
+												</span>
+											</div>
+										</div>
+
+										<a class="sbi_link_area nofancybox" rel="nofollow noopener" href={post.url} target="_blank">
+											<span class="sbi-screenreader">Open post by savor_restaurant</span>
+										</a>
+									</div>
+
+									<a class="sbi_photo" target="_blank" rel="nofollow noopener" href={post.url}>
+										<img
+											decoding="async"
+											src={post.image}
+											alt={post.caption.split("\n")[0]}
+											loading="lazy"
+										/>
+									</a>
+								</div>
+
+								<div class="sbi_info_wrapper">
+									<div class="sbi_info">
+										<p class="sbi_caption_wrap">
+											<span
+												class="sbi_caption"
+												style="font-size: 12px; color: rgb(67, 73, 96);"
+												aria-hidden="true"
+												set:html={post.caption.replaceAll("\n", "<br />")}
+											></span>
+										</p>
+
+										<div class="sbi_meta_wrap"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="sbi-divider"></div>
+						</div>
+					))}
+				</div>
+
+				<div id="sbi_load">
+					<a class="sbi_load_btn" href={savorSite.instagramUrl} target="_blank" rel="nofollow noreferrer">
+						Load More...
+					</a>
+					<a class="sbi_follow_btn sbi_load_btn" href={savorSite.instagramUrl} target="_blank" rel="nofollow noreferrer">
+						Follow on Instagram
+					</a>
+				</div>
+
+				<div id="sbi_mod_error">
+					<span>This error message is only visible to WordPress admins</span>
+					<strong>There has been a problem with your Instagram Feed.</strong>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="live-section live-specials home-fathers-day" id="specials">
+		<div class="container">
+			<div class="home-menu-heading">
+				<h4>Father&apos;s Day Menu | Open from Noon to 8:00 on June 18th, 2023</h4>
+				<p>(please note this menu is in addition to our regular menu)</p>
+			</div>
+			<div class="home-specials-heading">
+				<h2>Fathers&apos;s Day Specials</h2>
+			</div>
+			<div class="home-specials-grid">
+				<article class="home-special-card">
+					<h3>Soup Special</h3>
+					<h4>Soup</h4>
+					<p>Maryland Crab &amp; Corn Chowder</p>
+				</article>
+				<article class="home-special-card">
+					<h3>Salad Special</h3>
+					<h4>Salad</h4>
+					<p>Arugula, Mango, Pears, Goat Cheese, Toasted Almonds, Tomato, Red Onion, Champagne Vinaigrette</p>
+				</article>
+				<article class="home-special-card">
+					<h3>Appetizer Special</h3>
+					<p>Cold Antipasto Platter - Traditional Italian Meat &amp; Cheese Platter</p>
+					<p>Calamari Balsamico</p>
+				</article>
+				<article class="home-special-card">
+					<h3>Entree Special</h3>
+					<p>Dry Angus Prime Cowboy Steak - Sauteed Shitake Mushrooms, Port Wine Demi Glace, roasted potatoes and asparagus</p>
+					<p>Pork Chop Milanese - with Farro Rice and Arugula Salad</p>
+					<p>Seafood Pescatore - Homemade Squid Ink Fettuccini with Lobster Tail, Octopus, Calamari, Clams and Shrimp, Fra Diabalo Sauce</p>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<script is:inline>
+		const homeTestimonials = document.querySelector("[data-home-testimonials]");
+		if (homeTestimonials) {
+			const slides = Array.from(homeTestimonials.querySelectorAll("[data-slide]"));
+			const controls = Array.from(homeTestimonials.querySelectorAll("[data-dir]"));
+			let currentIndex = slides.findIndex((slide) => slide.classList.contains("is-active"));
+			if (currentIndex === -1) currentIndex = 0;
+
+			const showSlide = (nextIndex) => {
+				slides[currentIndex]?.classList.remove("is-active");
+				currentIndex = (nextIndex + slides.length) % slides.length;
+				slides[currentIndex]?.classList.add("is-active");
+			};
+
+			controls.forEach((button) => {
+				button.addEventListener("click", (event) => {
+					event.preventDefault();
+					const direction = Number(button.getAttribute("data-dir") || 0);
+					showSlide(currentIndex + direction);
+				});
+			});
+		}
+	</script>
 </Base>

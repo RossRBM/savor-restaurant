@@ -1,0 +1,126 @@
+---
+import { getEmDashCollection } from "emdash";
+import LambertAwards from "../components/LambertAwards.astro";
+import VenueTours from "../components/VenueTours.astro";
+import Base from "../layouts/Base.astro";
+import {
+	eventVenueCopy,
+	fallbackAwards,
+	savorSite,
+	sortByOrder,
+	venueSlides,
+	venueTours,
+} from "../data/savor";
+
+const { entries: awardEntries } = await getEmDashCollection("awards");
+const awards = sortByOrder(awardEntries.length ? awardEntries : fallbackAwards);
+---
+
+<Base
+	title="Private Event Venue New Jersey | Catering Venue Event | Savor Restaurant"
+	description="Discover Savor's private dining rooms for showers, birthdays, repasts, rehearsal dinners, and milestone celebrations in downtown Somerville."
+	image={savorSite.privateEventBackground}
+	pageClass="page-private-event"
+>
+	<section class="page-hero-band" style={`background-image: url('${savorSite.privateEventBackground}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<p class="live-hero__kicker">Private Event Venue</p>
+			<h1>Choose from three rooms holding between 14 and 80 people.</h1>
+			<p>
+				Host your shower, repast, rehearsal dinner, communion, birthday, or family gathering in
+				Savor's warm BYOB dining rooms.
+			</p>
+			<div class="hero-actions">
+				<a class="live-button" href="/takeout-catering/">View Catering</a>
+				<a class="live-button live-button--ghost" href="/privateeventvenu/" data-open-inquiry>
+					Inquire Now
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="live-section">
+		<div class="container live-split">
+			<div class="live-copy">
+				<p class="live-tagline">Private Event Venue</p>
+				<div class="section-title-block">
+					<h2>Host Your Celebration at Savor</h2>
+				</div>
+				{eventVenueCopy.map((paragraph) => (
+					<p>{paragraph}</p>
+				))}
+				<div class="live-actions" style="justify-content: flex-start;">
+					<a class="live-button" href="/privateeventvenu/" data-open-inquiry>
+						Start Your Inquiry
+					</a>
+				</div>
+			</div>
+			<div class="live-split__image">
+				<img src={venueSlides[0].src} alt={venueSlides[0].alt} loading="eager" />
+			</div>
+		</div>
+		<div class="container">
+			<div class="live-cta-bar">
+				<span>Private Event Setup</span>
+				<a href="/privateeventvenu/" data-open-inquiry>Inquire Now</a>
+			</div>
+			<div class="live-gallery-grid">
+				{venueSlides.map((image) => (
+					<figure>
+						<img src={image.src} alt={image.alt} loading="lazy" />
+					</figure>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<VenueTours
+		title="Take a look inside before your event."
+		backgroundImage={savorSite.cateringBackground}
+		tours={venueTours}
+	/>
+
+	<section class="live-section live-section--cream">
+		<div class="container">
+			<div class="section-title-block section-title-block--center">
+				<h2>Savor Makes Planning Easy</h2>
+				<p>
+					Bring your favorite wine and spirits, choose from our event menu options, and let our
+					team guide you from the first inquiry through the final toast.
+				</p>
+			</div>
+			<div class="live-list-grid">
+				<article class="info-card">
+					<h3>Ideal For</h3>
+					<ul>
+						<li>Baby showers</li>
+						<li>Bridal showers</li>
+						<li>Rehearsal dinners</li>
+						<li>Repasts</li>
+						<li>Communions and confirmations</li>
+						<li>Birthdays and anniversaries</li>
+					</ul>
+				</article>
+				<article class="info-card">
+					<h3>What Guests Love</h3>
+					<ul>
+						<li>Flexible room sizes</li>
+						<li>BYOB dining experience</li>
+						<li>Homemade pasta and polished entrees</li>
+						<li>Downtown Somerville location</li>
+						<li>Experienced service staff</li>
+						<li>Simple parking options nearby</li>
+					</ul>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<LambertAwards
+		awards={awards}
+		backgroundImage={savorSite.awardsBackground}
+		headline="Voted Best Fine Dining in Somerset County"
+		subheadline="Voted Best BYOB in Somerset County"
+	/>
+</Base>

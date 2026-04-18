@@ -1,0 +1,78 @@
+---
+import Base from "../layouts/Base.astro";
+import { bridalGallery, savorSite } from "../data/savor";
+
+const bridalHighlights = [
+	"Baby or bridal showers",
+	"Wedding rehearsals and rehearsal dinners",
+	"Repast and remembrance gatherings",
+	"Graduations, birthdays, and family celebrations",
+];
+---
+
+<Base
+	title="Bridal Showers and Rehearsal Dinners | Savor Restaurant"
+	description="Explore Savor's private event venue for bridal showers, rehearsal dinners, and elegant family gatherings in Somerville, New Jersey."
+	image={savorSite.bridalBackground}
+	pageClass="page-bridal-events"
+>
+	<section class="page-hero-band" style={`background-image: url('${savorSite.bridalBackground}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<p class="live-hero__kicker">Private Event Venue</p>
+			<h1>Bridal Showers and Rehearsal Dinners</h1>
+			<p>
+				An intimate and sophisticated setting in the heart of Somerville for memorable pre-wedding
+				celebrations and elegant family gatherings.
+			</p>
+		</div>
+	</section>
+
+	<section class="live-section">
+		<div class="container live-split">
+			<div class="live-copy">
+				<p class="live-tagline">Celebrate at Savor</p>
+				<div class="section-title-block">
+					<h2>Elegant, Warm, and Ready for Your Guests</h2>
+				</div>
+				<p>
+					Savor provides the perfect backdrop for bridal showers and rehearsal dinners, with
+					polished service, beautiful rooms, and food made fresh on premises.
+				</p>
+				<p>
+					Our private event venue is also ideal for repasts, graduations, birthdays, anniversaries,
+					and all of life's milestone gatherings.
+				</p>
+				<ul>
+					{bridalHighlights.map((item) => (
+						<li>{item}</li>
+					))}
+				</ul>
+				<div class="live-actions" style="justify-content: flex-start;">
+					<a class="live-button" href="/bridal-shower-and-rehearsal-private-event-venue/" data-open-inquiry>
+						Inquire About Your Event
+					</a>
+				</div>
+			</div>
+			<div class="live-split__image">
+				<img src={bridalGallery[0].src} alt={bridalGallery[0].alt} loading="eager" />
+			</div>
+		</div>
+	</section>
+
+	<section class="live-section live-section--cream">
+		<div class="container">
+			<div class="section-title-block section-title-block--center">
+				<h2>Recent Bridal and Rehearsal Setups</h2>
+				<p>Take a look at how Savor's rooms come together for these special celebrations.</p>
+			</div>
+			<div class="live-gallery-grid">
+				{bridalGallery.map((image) => (
+					<figure>
+						<img src={image.src} alt={image.alt} loading="lazy" />
+					</figure>
+				))}
+			</div>
+		</div>
+	</section>
+</Base>

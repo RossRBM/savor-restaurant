@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import { parkingSections, savorSite } from "../data/savor";
+---
+
+<Base
+	title="Parking | Savor Restaurant"
+	description="Everything you need to know about parking near Savor Restaurant, including municipal lots, ParkSmarter, and receipts."
+	image={savorSite.parkingArtwork}
+	pageClass="page-parking"
+>
+	<section class="page-hero-band" style={`background-image: url('${savorSite.parkingArtwork}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<p class="live-hero__kicker">Parking</p>
+			<h1>Parking at Savor - Made Simple, Smart, and Stress-Free</h1>
+			<p>
+				Nearby lots, metered street parking, and quick ParkSmarter links so getting to dinner feels
+				easy before you even arrive.
+			</p>
+		</div>
+	</section>
+
+	<section class="live-section">
+		<div class="container parking-grid">
+			{parkingSections.map((section) => (
+				<article class="parking-card">
+					<h3>{section.title}</h3>
+					<ul>
+						{section.body.map((item) => (
+							<li>{item}</li>
+						))}
+					</ul>
+				</article>
+			))}
+		</div>
+	</section>
+
+	<section class="live-section live-section--cream">
+		<div class="container live-split">
+			<div class="live-copy">
+				<p class="live-tagline">ParkSmarter App</p>
+				<div class="section-title-block">
+					<h2>Download the Parking App</h2>
+					<p>
+						ParkSmarter lets you pay for the municipal lots and street meters right from your phone.
+						If you need a receipt later, Savor's parking page links to that too.
+					</p>
+				</div>
+				<div class="live-actions" style="justify-content: flex-start;">
+					<a class="live-button" href={savorSite.parkingIosUrl} target="_blank" rel="noreferrer">
+						Apple App Store
+					</a>
+					<a class="live-button live-button--dark" href={savorSite.parkingAndroidUrl} target="_blank" rel="noreferrer">
+						Google Play Store
+					</a>
+					<a class="live-button live-button--ghost" href={savorSite.parkingReceiptsUrl} target="_blank" rel="noreferrer">
+						View Receipts
+					</a>
+				</div>
+			</div>
+			<div class="live-split__image">
+				<img src={savorSite.parkingArtwork} alt="Parking map for Savor Restaurant" loading="lazy" />
+			</div>
+		</div>
+	</section>
+</Base>

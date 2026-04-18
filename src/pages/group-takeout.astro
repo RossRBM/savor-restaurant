@@ -1,0 +1,52 @@
+---
+import Base from "../layouts/Base.astro";
+import { groupTakeoutSections, savorSite } from "../data/savor";
+---
+
+<Base
+	title="Group Takeout | Savor Restaurant"
+	description="Feed 6 to 8 people with Savor's group takeout package of salad, homemade pasta, and entree selections."
+	image={savorSite.groupTakeoutBackground}
+	pageClass="page-group-takeout"
+>
+	<section class="page-hero-band" style={`background-image: url('${savorSite.groupTakeoutBackground}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<p class="live-hero__kicker">Order Online</p>
+			<h1>Group Takeout</h1>
+			<p>
+				Feed 6-8 people with salad, homemade pasta, and entree selections from Savor, all for one
+				easy order.
+			</p>
+			<div class="hero-actions">
+				<a class="live-button" href={savorSite.orderUrl} target="_blank" rel="noreferrer">
+					Order Group Takeout
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="live-section">
+		<div class="container">
+			<div class="section-title-block section-title-block--center">
+				<h2>Serves 6-8 People | $99</h2>
+				<p>
+					A family-style package built for easy weeknight dinners, office lunches, and casual
+					entertaining.
+				</p>
+			</div>
+			<div class="group-package-grid">
+				{groupTakeoutSections.map((section) => (
+					<article class="package-card">
+						<h3>{section.title}</h3>
+						<ul>
+							{section.items.map((item) => (
+								<li>{item}</li>
+							))}
+						</ul>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+</Base>

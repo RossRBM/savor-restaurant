@@ -1,0 +1,79 @@
+---
+import Base from "../layouts/Base.astro";
+import { savorSite, takeoutCateringSections, venueSlides } from "../data/savor";
+---
+
+<Base
+	title="Catering for your next Event | Take Out | Private Room Venue | Savor Restaurant"
+	description="Order party trays, homemade pasta, salads, and appetizers from Savor for your next event or office lunch."
+	image={savorSite.cateringBackground}
+	pageClass="page-takeout-catering"
+>
+	<section class="page-hero-band" style={`background-image: url('${savorSite.cateringBackground}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<p class="live-hero__kicker">Catering</p>
+			<h1>Catering for your next Event | Take Out | Private Room Venue</h1>
+			<p>
+				Choose from Savor's takeout catering trays or host the gathering in one of our private dining
+				rooms in downtown Somerville.
+			</p>
+			<div class="hero-actions">
+				<a class="live-button" href="/files/takeoutcateringtrays.pdf" target="_blank" rel="noreferrer">
+					Download Catering PDF
+				</a>
+				<a class="live-button live-button--ghost" href="/takeout-catering/" data-open-inquiry>
+					Inquire Now
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="live-section">
+		<div class="container">
+			<div class="section-title-block section-title-block--center">
+				<h2>Takeout Catering Menu</h2>
+				<p>
+					Priced for smaller and larger groups so you can feed family dinners, office lunches, and
+					event tables with the same food served in our dining room.
+				</p>
+			</div>
+			<div class="live-list-grid">
+				{takeoutCateringSections.map((section) => (
+					<article class="info-card">
+						<h3>{section.title}</h3>
+						{section.subtitle && <p>{section.subtitle}</p>}
+						<ul>
+							{section.rows.map((row) => (
+								<li>{row}</li>
+							))}
+						</ul>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="live-section live-section--cream">
+		<div class="container live-split">
+			<div class="live-copy">
+				<p class="live-tagline">Private Room Venue</p>
+				<div class="section-title-block">
+					<h2>Need More Than Trays?</h2>
+					<p>
+						Savor also offers private rooms for showers, rehearsal dinners, repasts, birthdays, and
+						corporate gatherings. Let us know if you would rather host the event in-house.
+					</p>
+				</div>
+				<div class="live-actions" style="justify-content: flex-start;">
+					<a class="live-button" href="/privateeventvenu/">
+						Private Event Venue
+					</a>
+				</div>
+			</div>
+			<div class="live-split__image">
+				<img src={venueSlides[1].src} alt={venueSlides[1].alt} loading="lazy" />
+			</div>
+		</div>
+	</section>
+</Base>

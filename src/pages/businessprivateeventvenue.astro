@@ -5,11 +5,10 @@ import VenueTours from "../components/VenueTours.astro";
 import Base from "../layouts/Base.astro";
 import {
 	businessHighlights,
-	eventVenueCopy,
+	corporateEventTypes,
 	fallbackAwards,
 	savorSite,
 	sortByOrder,
-	venueSlides,
 	venueTours,
 } from "../data/savor";
 
@@ -18,23 +17,57 @@ const awards = sortByOrder(awardEntries.length ? awardEntries : fallbackAwards);
 ---
 
 <Base
-	title="Corporate & Business Private Event Venue | Savor Restaurant"
-	description="Host business dinners, client gatherings, and company celebrations in Savor's private rooms in downtown Somerville."
+	title="Corporate and Business Private Event Venue | Savor Restaurant"
+	description="Host meetings, client dinners, presentations, holiday parties, and business celebrations in Savor's private rooms."
 	image={savorSite.corporateBackground}
-	pageClass="page-inner"
+	pageClass="page-business-events"
 >
-	<section class="content-section">
-		<div class="container content-grid">
-			<div class="content-stack">
-				{businessHighlights.map((item) => (
-					<article class="content-card">
-						<h3>{item.title}</h3>
-						<p>{item.body}</p>
-					</article>
-				))}
-			</div>
+	<section class="page-hero-band" style={`background-image: url('${savorSite.corporateBackground}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<p class="live-hero__kicker">Corporate Events</p>
+			<h1>Corporate and Business Private Event Venue</h1>
+			<p>
+				Elevate your next client dinner, team celebration, networking event, or presentation with
+				Savor's polished dining rooms and flexible event service.
+			</p>
+		</div>
+	</section>
 
-			<div class="video-card">
+	<section class="live-section">
+		<div class="container live-list-grid">
+			{businessHighlights.map((item) => (
+				<article class="content-card">
+					<h3>{item.title}</h3>
+					<p>{item.body}</p>
+				</article>
+			))}
+		</div>
+	</section>
+
+	<section class="live-section live-section--cream">
+		<div class="container live-split">
+			<div class="live-copy">
+				<p class="live-tagline">Business Event Ideas</p>
+				<div class="section-title-block">
+					<h2>Events We Host</h2>
+					<p>
+						From small strategy sessions to larger company celebrations, Savor works well for a
+						wide range of professional gatherings.
+					</p>
+				</div>
+				<div class="live-number-grid">
+					{corporateEventTypes.map((item) => (
+						<span>{item}</span>
+					))}
+				</div>
+				<div class="live-actions" style="justify-content: flex-start;">
+					<a class="live-button" href="/businessprivateeventvenue/" data-open-inquiry>
+						Plan A Corporate Event
+					</a>
+				</div>
+			</div>
+			<div class="live-media-card">
 				<iframe
 					src="https://www.youtube.com/embed/8BrFgjtiSAw"
 					title="Discover fine dining and flawless event experiences at Savor Restaurant"
@@ -46,40 +79,17 @@ const awards = sortByOrder(awardEntries.length ? awardEntries : fallbackAwards);
 		</div>
 	</section>
 
-	<section class="content-section">
-		<div class="container">
-			<div class="callout-strip">PRIVATE EVENTS &amp; TAKE OUT | INQUIRE NOW</div>
-		</div>
-	</section>
-
 	<VenueTours
-		title="Choose from three rooms holding between 14 and 80 people"
+		title="Tour the private rooms before your meeting or celebration."
 		backgroundImage={savorSite.corporateBackground}
 		tours={venueTours}
 	/>
 
-	<section class="content-section">
-		<div class="container two-column">
-			<div class="stacked-copy">
-				<div class="section-title-block">
-					<h4>PRIVATE EVENT VENUE</h4>
-				</div>
-				{eventVenueCopy.map((paragraph) => (
-					<p>{paragraph}</p>
-				))}
-				<p>
-					<a class="button-link button-link--accent" href={savorSite.emailHref}>
-						Plan a Corporate Event
-					</a>
-				</p>
-			</div>
-
-			<div class="fade-slides" aria-hidden="true">
-				{venueSlides.map((image) => (
-					<div class="fade-slides__item">
-						<img src={image.src} alt={image.alt} loading="lazy" />
-					</div>
-				))}
+	<section class="live-section">
+		<div class="container">
+			<div class="live-cta-bar">
+				<span>Private Events &amp; Take Out</span>
+				<a href="/businessprivateeventvenue/" data-open-inquiry>Inquire Now</a>
 			</div>
 		</div>
 	</section>
@@ -88,6 +98,6 @@ const awards = sortByOrder(awardEntries.length ? awardEntries : fallbackAwards);
 		awards={awards}
 		backgroundImage={savorSite.awardsBackground}
 		headline="Voted Best Fine Dining in Somerset County"
-		subheadline="Voted Best BYOB and Banquet Facility in Somerset County"
+		subheadline="Voted Best BYOB in Somerset County"
 	/>
 </Base>

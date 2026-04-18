@@ -1,0 +1,50 @@
+---
+import Base from "../layouts/Base.astro";
+import { savorSite } from "../data/savor";
+---
+
+<Base
+	title="Savor Gift Card | Savor Restaurant"
+	description="Purchase a Savor gift card online and treat someone to lunch, dinner, or a special celebration in Somerville."
+	image={savorSite.giftCardArtwork}
+	pageClass="page-gift-card"
+>
+	<section class="page-hero-band" style={`background-image: url('${savorSite.giftCardArtwork}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<p class="live-hero__kicker">Gift Cards</p>
+			<h1>Purchase a Savor Gift Card</h1>
+			<p>
+				Give the gift of lunch, dinner, fresh pasta, and a night out in downtown Somerville with a
+				digital Savor gift card.
+			</p>
+			<div class="hero-actions">
+				<a class="live-button" href={savorSite.giftCardUrl} target="_blank" rel="noreferrer">
+					Buy Gift Card
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="live-section">
+		<div class="container live-split">
+			<div class="live-copy">
+				<p class="live-tagline">A Great Gift for Any Occasion</p>
+				<div class="section-title-block">
+					<h2>Simple to Send, Easy to Enjoy</h2>
+				</div>
+				<p>
+					Whether you are celebrating a birthday, holiday, thank-you, or special milestone, a Savor
+					gift card makes it easy to share a memorable dining experience.
+				</p>
+				<p>
+					Purchase online, send it directly, and let your recipient choose the perfect time to enjoy
+					lunch, dinner, or a private event consultation at the restaurant.
+				</p>
+			</div>
+			<div class="live-split__image">
+				<img src={savorSite.giftCardArtwork} alt="Savor Restaurant gift card" loading="lazy" />
+			</div>
+		</div>
+	</section>
+</Base>

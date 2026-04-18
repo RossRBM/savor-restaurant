@@ -1,0 +1,60 @@
+---
+import Base from "../layouts/Base.astro";
+import { savorSite } from "../data/savor";
+
+const deliveryHighlights = [
+	"Order online from Savor's delivery menu.",
+	"Select from appetizers, salads, soups, entrees, and homemade pasta.",
+	"Perfect for an easy dinner at home or a dependable lunch delivered to the office.",
+];
+---
+
+<Base
+	title="Delivery Menu | Savor Restaurant"
+	description="Order Savor's Italian American favorites online for delivery."
+	image={savorSite.pastaBackground}
+	pageClass="page-delivery-menu"
+>
+	<section class="page-hero-band" style={`background-image: url('${savorSite.pastaBackground}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<p class="live-hero__kicker">Order Online</p>
+			<h1>Delivery Menu</h1>
+			<p>
+				Bring Savor home. Order lunch, dinner, appetizers, salads, and homemade pasta for delivery.
+			</p>
+			<div class="hero-actions">
+				<a class="live-button" href={savorSite.orderUrl} target="_blank" rel="noreferrer">
+					Order Delivery
+				</a>
+				<a class="live-button live-button--ghost" href="/savorrestaurantmenu/">
+					View Full Menu
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="live-section">
+		<div class="container live-split">
+			<div class="live-copy">
+				<p class="live-tagline">Take Out or Delivery Food</p>
+				<div class="section-title-block">
+					<h2>Fresh Pasta and Dinner Favorites, Ready When You Are</h2>
+				</div>
+				<ul>
+					{deliveryHighlights.map((item) => (
+						<li>{item}</li>
+					))}
+				</ul>
+				<div class="live-actions" style="justify-content: flex-start;">
+					<a class="live-button" href={savorSite.orderUrl} target="_blank" rel="noreferrer">
+						Order Online Now
+					</a>
+				</div>
+			</div>
+			<div class="live-split__image">
+				<img src="/images/live/group-takeout.png" alt="Take out or delivery food from Savor Restaurant" loading="lazy" />
+			</div>
+		</div>
+	</section>
+</Base>

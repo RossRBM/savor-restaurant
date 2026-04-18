@@ -2,10 +2,10 @@
 import { getSiteSettings } from "emdash";
 import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
-import { Font } from "astro:assets";
 import {
 	footerSitemapLinks,
 	primaryNav,
+	privateEventInquiryOptions,
 	savorSite,
 	socialLinks,
 } from "../data/savor";
@@ -18,18 +18,9 @@ interface Props {
 	canonical?: string | null;
 	content?: { collection: string; id: string; slug?: string | null };
 	pageClass?: string | null;
-	transparentHeader?: boolean;
 }
 
-const {
-	title,
-	description,
-	image,
-	canonical,
-	content,
-	pageClass,
-	transparentHeader = false,
-} = Astro.props;
+const { title, description, image, canonical, content, pageClass } = Astro.props;
 
 const settings = await getSiteSettings();
 const siteTitle = settings?.title || savorSite.name;
@@ -64,6 +55,11 @@ const normalizePath = (value: string) => {
 
 const isCurrent = (value: string) =>
 	isExternalUrl(value) ? false : normalizePath(value) === currentPath;
+
+const isCurrentTree = (item: (typeof primaryNav)[number]) =>
+	isCurrent(item.url) ||
+	item.children?.some((child) => isCurrent(child.url)) ||
+	false;
 ---
 
 <!doctype html>
@@ -71,186 +67,321 @@ const isCurrent = (value: string) =>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<Font cssVariable="--font-display" preload />
-		<Font cssVariable="--font-ui" />
 		<title>{fullTitle}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:wght@100;300;400;500;700&family=Lexend+Zetta:wght@400&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="/lambert-theme/assets/css/plugins.css" />
+		<link rel="stylesheet" href="/lambert-theme/style.css" />
+		<link rel="stylesheet" href="/lambert-theme/assets/css/responsive.css" />
+		<link rel="stylesheet" href="/lambert-theme/assets/skins/default.css" />
+		<link rel="stylesheet" href="/lambert-theme/assets/css/custom.css" />
 		<EmDashHead page={pageCtx} />
 	</head>
-	<body class:list={[pageClass, transparentHeader && "has-transparent-header"]}>
+	<body class:list={["live-savor-body", pageClass]}>
 		<EmDashBodyStart page={pageCtx} />
-		<header
-			class:list={["site-header", transparentHeader && "site-header--transparent"]}
-			data-site-header
-		>
-			<div class="header-inner">
-				<div class="container header-inner__wrap">
-					<a href="/" class="site-brand" aria-label={siteTitle}>
-						<img src={savorSite.stickyLogo} alt={siteTitle} />
-					</a>
+		<div id="main" class="hide-loader">
+			<header class="mainpage-header" data-site-header>
+				<div class="header-inner">
+					<div class="container">
+						<div class="nav-social">
+							<ul>
+								{socialLinks.map((item) => (
+									<li>
+										<a href={item.url} target="_blank" rel="noreferrer" aria-label={item.label}>
+											<i class={item.icon} aria-hidden="true"></i>
+										</a>
+									</li>
+								))}
+								{isLoggedIn && (
+									<li class="nav-social__admin">
+										<a href="/_emdash/admin" aria-label="Admin">CMS</a>
+									</li>
+								)}
+							</ul>
+						</div>
 
-					<nav class="primary-nav" aria-label="Primary">
-						<ul class="primary-nav__list">
-							{primaryNav.map((item) => (
-								<li
-									class:list={[
-										"primary-nav__item",
-										item.children?.length && "has-children",
-										isCurrent(item.url) && "is-current",
-									]}
-								>
-									<a
-										href={item.url}
-										target={item.target}
-										rel={item.target === "_blank" ? "noreferrer" : undefined}
-									>
-										{item.label}
-									</a>
-									{item.children?.length ? (
-										<ul class="primary-nav__submenu">
-											{item.children.map((child) => (
-												<li class:list={[isCurrent(child.url) && "is-current"]}>
-													<a
-														href={child.url}
-														target={child.target}
-														rel={child.target === "_blank" ? "noreferrer" : undefined}
-													>
-														{child.label}
-													</a>
-												</li>
-											))}
-										</ul>
-									) : null}
-								</li>
-							))}
-						</ul>
-					</nav>
+						<div class="logo-holder">
+							<a href="/" aria-label={siteTitle}>
+								<img src={savorSite.heroLogo} class="responsive-img logo-vis" alt={siteTitle} />
+								<img
+									src={savorSite.stickyLogo}
+									class="responsive-img logo-notvis"
+									alt={siteTitle}
+								/>
+							</a>
+						</div>
 
-					<div class="header-tools">
-						<ul class="social-strip" aria-label="Social links">
-							{socialLinks.map((item) => (
-								<li>
-									<a href={item.url} target="_blank" rel="noreferrer" aria-label={item.label}>
-										{item.shortLabel}
-									</a>
-								</li>
-							))}
-						</ul>
-						{isLoggedIn && <a href="/_emdash/admin" class="admin-link">Admin</a>}
-					</div>
+						<div class="nav-button-holder">
+							<button class="nav-button" type="button" aria-label="Open navigation" data-nav-toggle>
+								<span></span>
+								<span></span>
+								<span></span>
+							</button>
+						</div>
 
-					<details class="mobile-nav">
-						<summary>Menu</summary>
-						<div class="mobile-nav__panel">
-							{primaryNav.map((item) => (
-								<div class="mobile-nav__group">
-									<a
-										href={item.url}
-										target={item.target}
-										rel={item.target === "_blank" ? "noreferrer" : undefined}
-									>
-										{item.label}
-									</a>
-									{item.children?.map((child) => (
-										<a
-											class="mobile-nav__child"
-											href={child.url}
-											target={child.target}
-											rel={child.target === "_blank" ? "noreferrer" : undefined}
-										>
-											{child.label}
+						<div class="nav-holder" data-nav-holder>
+							<nav class="main_navigation" aria-label="Primary">
+								<ul class="lambert_main-nav">
+									{primaryNav.map((item) => (
+										<li class:list={[isCurrentTree(item) && "is-current"]}>
+											<a
+												href={item.url}
+												target={item.target}
+												rel={item.target === "_blank" ? "noreferrer" : undefined}
+												class:list={[isCurrentTree(item) && "act-link"]}
+											>
+												{item.label}
+											</a>
+											{item.children?.length ? (
+												<ul>
+													{item.children.map((child) => (
+														<li>
+															<a
+																href={child.url}
+																target={child.target}
+																rel={child.target === "_blank" ? "noreferrer" : undefined}
+																class:list={[isCurrent(child.url) && "act-link"]}
+															>
+																{child.label}
+															</a>
+														</li>
+													))}
+												</ul>
+											) : null}
+										</li>
+									))}
+								</ul>
+								<div id="socialmobile">
+									{socialLinks.map((item) => (
+										<a href={item.url} target="_blank" rel="noreferrer" aria-label={item.label}>
+											<i class={`${item.icon} fa-2x`} aria-hidden="true"></i>
 										</a>
 									))}
 								</div>
-							))}
-							<div class="mobile-nav__social">
-								{socialLinks.map((item) => (
-									<a href={item.url} target="_blank" rel="noreferrer">
-										{item.label}
-									</a>
-								))}
-							</div>
-							{isLoggedIn && <a href="/_emdash/admin">Admin</a>}
+							</nav>
 						</div>
-					</details>
+					</div>
 				</div>
-			</div>
-		</header>
+			</header>
 
-		<main id="top">
-			<slot />
-		</main>
+			<div id="wrapper">
+				<main id="top">
+					<slot />
+				</main>
 
-		<footer class="site-footer">
-			<div class="footer-main">
-				<div class="container footer-main__grid">
-					<section>
-						<img src={savorSite.footerLogo} alt={siteTitle} class="footer-logo" />
-						<h3>Restaurant</h3>
-						<p>
-							<a href="https://goo.gl/maps/uBDqm5m9wFYXsauJ6" target="_blank" rel="noreferrer">
-								{savorSite.addressShort}
+				<footer class="footer-main">
+					<div class="footer-inner">
+						<div class="container">
+							<div class="row live-footer-grid">
+								<section class="footer-widgets">
+									<h3 class="widget-title">Restaurant</h3>
+									<div class="textwidget">
+										<p>
+											<a href="https://goo.gl/maps/uBDqm5m9wFYXsauJ6" target="_blank" rel="noreferrer">
+												{savorSite.addressShort}
+											</a>
+										</p>
+										<p><a href={savorSite.phoneHref}>{savorSite.phoneDisplay}</a></p>
+										<p><a href={savorSite.emailHref}>{savorSite.email}</a></p>
+									</div>
+								</section>
+
+								<section class="footer-widgets">
+									<h3 class="widget-title">Hours</h3>
+									<div class="textwidget">
+										<p>{savorSite.hours}</p>
+										<p>
+											<a href={savorSite.parkingMapUrl} target="_blank" rel="noreferrer">
+												PARKING LOCATION MAP
+											</a>
+										</p>
+										<p>
+											<a href={savorSite.parkingAppUrl} target="_blank" rel="noreferrer">
+												Parking App Informaion Download
+											</a>
+										</p>
+										<p>{savorSite.lunchHours}</p>
+										<p>{savorSite.lastSeating}</p>
+										<p>
+											<a href={savorSite.reservationsUrl} target="_blank" rel="noreferrer">
+												RESERVATIONS
+											</a>
+										</p>
+									</div>
+								</section>
+
+								<section class="footer-widgets">
+									<h3 class="widget-title">Sitemap</h3>
+									<div class="textwidget">
+										{footerSitemapLinks.map((item) => (
+											<p>
+												<a
+													href={item.url}
+													target={item.target}
+													rel={item.target === "_blank" ? "noreferrer" : undefined}
+												>
+													{item.label}
+												</a>
+											</p>
+										))}
+										<p><a href="/privacypolicy/">Privacy Policy</a></p>
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+
+					<div class="to-top-holder">
+						<div class="container live-footer-bottom">
+							<p>&copy;{savorSite.footerCopyright}</p>
+							<a href="#top" class="to-top">
+								<span>BACK TO TOP</span>
 							</a>
-						</p>
-						<p><a href={savorSite.phoneHref}>{savorSite.phoneDisplay}</a></p>
-						<p><a href={savorSite.emailHref}>{savorSite.email}</a></p>
-					</section>
-
-					<section>
-						<h3>Hours</h3>
-						<p>{savorSite.hours}</p>
-						<p>
-							<a href={savorSite.parkingMapUrl} target="_blank" rel="noreferrer">
-								PARKING LOCATION MAP
-							</a>
-						</p>
-						<p>
-							{savorSite.lunchHours}
-							<br />
-							{savorSite.lastSeating}
-							<br />
-							<a href={savorSite.reservationsUrl} target="_blank" rel="noreferrer">
-								RESERVATIONS
-							</a>
-						</p>
-					</section>
-
-					<section>
-						<h3>Sitemap</h3>
-						<ul class="footer-links">
-							{footerSitemapLinks.map((item) => (
-								<li>
-									<a
-										href={item.url}
-										target={item.target}
-										rel={item.target === "_blank" ? "noreferrer" : undefined}
-									>
-										{item.label}
-									</a>
-								</li>
-							))}
-							<li><a href="/privacypolicy/">Privacy Policy</a></li>
-						</ul>
-					</section>
-				</div>
+						</div>
+					</div>
+				</footer>
 			</div>
+		</div>
 
-			<div class="to-top-holder">
-				<div class="container to-top-holder__inner">
-					<p>&copy; {savorSite.footerCopyright}</p>
-					<a href="#top" class="to-top-link">BACK TO TOP</a>
-				</div>
+		<button class="inquiry-fab" type="button" data-open-inquiry>
+			Inquire About Your Private Event
+		</button>
+
+		<div class="inquiry-modal" data-inquiry-modal hidden>
+			<div class="inquiry-modal__overlay" data-close-inquiry></div>
+			<div class="inquiry-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="inquiry-title">
+				<button class="inquiry-modal__close" type="button" aria-label="Close" data-close-inquiry>
+					&times;
+				</button>
+				<p class="inquiry-modal__eyebrow">Inquire About Your</p>
+				<h2 id="inquiry-title">Private Event</h2>
+				<form class="inquiry-form" data-inquiry-form>
+					<input name="name" type="text" placeholder="Name" required />
+					<input name="email" type="email" placeholder="Email" required />
+					<input name="confirmEmail" type="email" placeholder="Confirm Email" required />
+					<input name="phone" type="tel" placeholder="Phone" required />
+					<input name="date" type="text" placeholder="Preferred Date" />
+					<select name="eventType">
+						<option value="">Event Type</option>
+						{privateEventInquiryOptions.eventTypes.map((item) => (
+							<option value={item}>{item}</option>
+						))}
+					</select>
+					<select name="guestCount">
+						<option value="">Number of Guests</option>
+						{privateEventInquiryOptions.guestCounts.map((item) => (
+							<option value={item}>{item}</option>
+						))}
+					</select>
+					<select name="timeSlot">
+						<option value="">Time Slot</option>
+						{privateEventInquiryOptions.timeSlots.map((item) => (
+							<option value={item}>{item}</option>
+						))}
+					</select>
+					<select name="referral">
+						<option value="">How did you hear about us?</option>
+						{privateEventInquiryOptions.referrals.map((item) => (
+							<option value={item}>{item}</option>
+						))}
+					</select>
+					<textarea
+						name="message"
+						rows="4"
+						placeholder="Tell us a little about your event"
+					></textarea>
+					<button type="submit" class="inquiry-form__submit">Send Inquiry</button>
+				</form>
 			</div>
-		</footer>
+		</div>
 
 		<script is:inline>
 			const header = document.querySelector("[data-site-header]");
+			const navToggle = document.querySelector("[data-nav-toggle]");
+			const navHolder = document.querySelector("[data-nav-holder]");
+			const modal = document.querySelector("[data-inquiry-modal]");
+			const inquiryForm = document.querySelector("[data-inquiry-form]");
+
 			const syncHeader = () => {
 				if (!header) return;
-				header.classList.toggle("is-scrolled", window.scrollY > 24);
+				header.classList.toggle("sticky", window.scrollY > 24);
+			};
+
+			const toggleNav = () => {
+				if (!header || !navHolder) return;
+				const isOpen = header.classList.toggle("is-nav-open");
+				navHolder.style.display = isOpen ? "block" : "";
+			};
+
+			const openModal = () => {
+				if (!modal) return;
+				modal.hidden = false;
+				document.body.classList.add("is-modal-open");
+			};
+
+			const closeModal = () => {
+				if (!modal) return;
+				modal.hidden = true;
+				document.body.classList.remove("is-modal-open");
 			};
 
 			syncHeader();
 			window.addEventListener("scroll", syncHeader, { passive: true });
+			navToggle?.addEventListener("click", toggleNav);
+
+			document.querySelectorAll("[data-open-inquiry]").forEach((button) => {
+				button.addEventListener("click", (event) => {
+					event.preventDefault();
+					openModal();
+				});
+			});
+
+			document.querySelectorAll("[data-close-inquiry]").forEach((button) => {
+				button.addEventListener("click", closeModal);
+			});
+
+			document.addEventListener("keydown", (event) => {
+				if (event.key === "Escape") {
+					closeModal();
+				}
+			});
+
+			inquiryForm?.addEventListener("submit", (event) => {
+				event.preventDefault();
+				const form = event.currentTarget;
+				const data = new FormData(form);
+				const email = String(data.get("email") || "").trim();
+				const confirmEmail = String(data.get("confirmEmail") || "").trim();
+
+				if (email !== confirmEmail) {
+					window.alert("Email and Confirm Email must match.");
+					return;
+				}
+
+				const eventType = String(data.get("eventType") || "Private Event").trim();
+				const subject = encodeURIComponent(`Private Event Inquiry - ${eventType}`);
+				const body = encodeURIComponent(
+					[
+						`Name: ${String(data.get("name") || "").trim()}`,
+						`Email: ${email}`,
+						`Phone: ${String(data.get("phone") || "").trim()}`,
+						`Preferred Date: ${String(data.get("date") || "").trim()}`,
+						`Event Type: ${eventType}`,
+						`Guests: ${String(data.get("guestCount") || "").trim()}`,
+						`Time Slot: ${String(data.get("timeSlot") || "").trim()}`,
+						`How did you hear about us?: ${String(data.get("referral") || "").trim()}`,
+						"",
+						`${String(data.get("message") || "").trim()}`,
+					].join("\n"),
+				);
+
+				window.location.href = `mailto:Cater@savornjrestaurant.com?subject=${subject}&body=${body}`;
+				closeModal();
+			});
 		</script>
 		<EmDashBodyEnd page={pageCtx} />
 	</body>

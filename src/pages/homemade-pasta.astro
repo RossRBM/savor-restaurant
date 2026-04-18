@@ -1,0 +1,48 @@
+---
+import Base from "../layouts/Base.astro";
+import { homemadePastaShowcase, savorSite } from "../data/savor";
+---
+
+<Base
+	title="Homemade Pasta | Savor Restaurant"
+	description="Explore Savor's homemade pasta lineup, from orecchiette and gnocchi to infused fettuccini."
+	image={savorSite.pastaBackground}
+	pageClass="page-homemade-pasta"
+>
+	<section class="page-hero-band" style={`background-image: url('${savorSite.pastaBackground}');`}>
+		<div class="parallax-band__overlay"></div>
+		<div class="container page-hero-band__content">
+			<p class="live-hero__kicker">Order Online</p>
+			<h1>Savor's Homemade Pastas</h1>
+			<p>
+				Whether it is sundried tomato orecchiette, heirloom purple potato gnocchi, or spinach infused
+				fettuccini, there is nothing like fresh pasta made from scratch.
+			</p>
+			<div class="hero-actions">
+				<a class="live-button" href={savorSite.orderUrl} target="_blank" rel="noreferrer">
+					Order Pasta Online
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="live-section">
+		<div class="container">
+			<div class="section-title-block section-title-block--center">
+				<h2>Made Fresh Every Day</h2>
+				<p>
+					Savor's pasta program is one of the signatures of the kitchen, balancing classic sauces and
+					house-made dough with the same care we bring to the dining room.
+				</p>
+			</div>
+			<div class="pasta-grid">
+				{homemadePastaShowcase.map((item) => (
+					<article class="pasta-card">
+						<h3>{item.title}</h3>
+						<p>{item.body}</p>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+</Base>

@@ -3,37 +3,93 @@
 
 /// <reference types="emdash/locals" />
 
-import type { ContentBylineCredit, PortableTextBlock } from "emdash";
+import type { PortableTextBlock } from "emdash";
 
 export interface Page {
   id: string;
   slug: string | null;
   status: string;
   title: string;
-  content?: PortableTextBlock[];
+  template?: string;
+  nav_label?: string;
+  eyebrow?: string;
+  headline?: string;
+  intro?: string;
+  hero_image?: string;
+  body?: PortableTextBlock[];
+  primary_cta_label?: string;
+  primary_cta_url?: string;
+  secondary_cta_label?: string;
+  secondary_cta_url?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
-  bylines?: ContentBylineCredit[];
 }
 
-export interface Post {
+export interface MenuItem {
   id: string;
   slug: string | null;
   status: string;
   title: string;
-  featured_image?: { id: string; src?: string; alt?: string; width?: number; height?: number };
-  content?: PortableTextBlock[];
-  excerpt?: string;
+  menu_page?: string;
+  section?: string;
+  price?: string;
+  secondary_price?: string;
+  description?: string;
+  image_url?: string;
+  sort_order?: number;
+  featured?: boolean;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
-  bylines?: ContentBylineCredit[];
+}
+
+export interface TeamMember {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  role?: string;
+  bio?: string;
+  image_url?: string;
+  sort_order?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+}
+
+export interface Testimonial {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  quote?: string;
+  source?: string;
+  sort_order?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+}
+
+export interface Award {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  image_url?: string;
+  link_url?: string;
+  sort_order?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
 }
 
 declare module "emdash" {
   interface EmDashCollections {
     pages: Page;
-    posts: Post;
+    menu_items: MenuItem;
+    team_members: TeamMember;
+    testimonials: Testimonial;
+    awards: Award;
   }
 }

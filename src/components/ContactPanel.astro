@@ -1,0 +1,105 @@
+---
+import { savorSite } from "../data/savor";
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "Plan dinner, a private event, or your next catered gathering.",
+	description = "Reach out for room availability, catering menus, and group dining details.",
+} = Astro.props;
+---
+
+<section class="contact-panel section-shell">
+	<div class="contact-panel__wrap surface-card">
+		<div>
+			<p class="eyebrow">Visit Savor</p>
+			<h2>{title}</h2>
+			<p class="contact-panel__lede">{description}</p>
+			<div class="contact-panel__actions">
+				<a class="button" href={savorSite.reservationsUrl} target="_blank" rel="noreferrer">
+					Reservations
+				</a>
+				<a class="button button-secondary" href={savorSite.phoneHref}>
+					Call {savorSite.phoneDisplay}
+				</a>
+			</div>
+		</div>
+		<div class="contact-panel__facts">
+			<div>
+				<span>Address</span>
+				<p>{savorSite.address}</p>
+			</div>
+			<div>
+				<span>Email</span>
+				<p>
+					<a href={savorSite.emailHref}>{savorSite.email}</a>
+				</p>
+			</div>
+			<div>
+				<span>Hours</span>
+				<p>{savorSite.hours}</p>
+				<p>{savorSite.lunchHours}</p>
+				<p>{savorSite.lastSeating}</p>
+			</div>
+			<div>
+				<span>Parking</span>
+				<p>
+					<a href={savorSite.parkingMapUrl}>Parking location map</a>
+				</p>
+				<p>
+					<a href={savorSite.parkingAppUrl} target="_blank" rel="noreferrer">
+						Somerville parking app info
+					</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.contact-panel__wrap {
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+		gap: 2rem;
+	}
+
+	.contact-panel__lede {
+		margin-top: 1rem;
+		max-width: 52ch;
+		color: var(--color-muted);
+	}
+
+	.contact-panel__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.85rem;
+		margin-top: 1.5rem;
+	}
+
+	.contact-panel__facts {
+		display: grid;
+		gap: 1rem;
+	}
+
+	.contact-panel__facts span {
+		display: block;
+		margin-bottom: 0.35rem;
+		font-size: 0.74rem;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--color-accent);
+	}
+
+	.contact-panel__facts p {
+		color: var(--color-muted);
+	}
+
+	@media (max-width: 860px) {
+		.contact-panel__wrap {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

@@ -1,108 +1,344 @@
-/*
-  theme.css -- override any :root variable here to retheme the blog.
-
-  This is the only file you need to edit to customize the site's visual
-  appearance. All defaults are listed below as comments. Uncomment and
-  change any value to override it.
-
-  Base.astro puts its defaults inside @layer base, so declarations here
-  (which are unlayered) always take priority -- no specificity tricks needed.
-
-  Note: this template defines explicit dark mode colors in Base.astro.
-  Overriding light-mode --color-* variables here won't affect dark mode.
-  To customize dark mode, also override --color-* variables inside a
-  @media (prefers-color-scheme: dark) block and/or in the :root.dark rule.
-*/
-
 :root {
-	/* --- Colors ---
-	--color-bg: #ffffff;
-	--color-bg-subtle: #fafafa;
-	--color-text: #1a1a1a;
-	--color-text-secondary: #525252;
-	--color-muted: #8b8b8b;
-	--color-border: #e5e5e5;
-	--color-border-subtle: #f0f0f0;
-	--color-surface: #f7f7f7;
-	--color-accent: #0066cc;
-	--color-accent-hover: #0052a3;
-	--color-on-accent: white;
-	--color-accent-ring: color-mix(in srgb, var(--color-accent) 25%, transparent);
-	*/
+	--color-bg: #f8f2e8;
+	--color-surface: rgba(255, 252, 246, 0.86);
+	--color-ink: #241914;
+	--color-muted: #6b584e;
+	--color-border: rgba(109, 80, 61, 0.14);
+	--color-accent: #f47920;
+	--color-accent-deep: #c85c0d;
+	--color-shadow: rgba(36, 25, 20, 0.08);
+	--radius-lg: 26px;
+	--radius-sm: 999px;
+	--site-max: 1180px;
+}
 
-	/* --- Type scale ---
-	--font-size-xs: 0.8125rem;
-	--font-size-sm: 0.875rem;
-	--font-size-base: 1rem;
-	--font-size-lg: 1.125rem;
-	--font-size-xl: 1.25rem;
-	--font-size-2xl: 1.5rem;
-	--font-size-3xl: 2rem;
-	--font-size-4xl: 2.5rem;
-	--font-size-5xl: 3.5rem;
-	*/
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
 
-	/* --- Line heights ---
-	--leading-tight: 1.15;
-	--leading-snug: 1.3;
-	--leading-normal: 1.5;
-	--leading-relaxed: 1.7;
-	*/
+html {
+	scroll-behavior: smooth;
+}
 
-	/* --- Letter spacing ---
-	--tracking-tight: -0.03em;    used on h1 and large titles
-	--tracking-snug: -0.02em;     used on h2–h6, site/card titles
-	--tracking-wide: 0.06em;      used on meta labels, TOC/widget titles
-	--tracking-wider: 0.08em;     used on footer headings, section labels
-	*/
+body {
+	margin: 0;
+	font-family: var(--font-body), sans-serif;
+	color: var(--color-ink);
+	background:
+		radial-gradient(circle at top, rgba(244, 121, 32, 0.16), transparent 34%),
+		linear-gradient(180deg, #fffaf2 0%, var(--color-bg) 52%, #f3ebdf 100%);
+	line-height: 1.6;
+}
 
-	/* --- Spacing ---
-	--spacing-1: 0.25rem;
-	--spacing-2: 0.5rem;
-	--spacing-3: 0.75rem;
-	--spacing-4: 1rem;
-	--spacing-5: 1.25rem;
-	--spacing-6: 1.5rem;
-	--spacing-8: 2rem;
-	--spacing-10: 2.5rem;
-	--spacing-12: 3rem;
-	--spacing-16: 4rem;
-	--spacing-20: 5rem;
-	--spacing-24: 6rem;
-	*/
+img {
+	max-width: 100%;
+}
 
-	/* --- Layout ---
-	--content-width: 680px;       article/page body column width
-	--wide-width: 1200px;         max container width (home, archives)
-	--gutter-width: 200px;        right sidebar column (TOC) on article pages
-	--meta-col-width: 180px;      left meta column on article pages
-	--nav-height: 64px;           sticky header height
-	--search-input-width: 180px;  nav search box width
-	*/
+a {
+	color: inherit;
+}
 
-	/* --- Borders & radius ---
-	--radius: 4px;
-	--radius-lg: 8px;
-	*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	font-family: var(--font-display), serif;
+	font-weight: 600;
+	line-height: 1.02;
+}
 
-	/* --- Transitions ---
-	--transition-fast: 120ms ease;
-	--transition-base: 180ms ease;
-	*/
+p,
+ul,
+ol {
+	margin: 0;
+}
 
-	/* --- Avatars ---
-	--avatar-size-xs: 18px;    card byline avatars
-	--avatar-size-sm: 20px;    post list byline avatars
-	--avatar-size-md: 24px;    featured post byline avatars
-	--avatar-size-lg: 32px;    single post byline avatars
-	*/
+.container,
+.section-shell {
+	width: min(var(--site-max), calc(100% - 3rem));
+	margin: 0 auto;
+}
 
-	/* --- Shadows ---
-	--shadow-dropdown: 0 8px 30px rgba(0, 0, 0, 0.12);
-	--shadow-btn-active: 0 1px 2px rgba(0, 0, 0, 0.05);
-	*/
+.section-shell {
+	padding-block: clamp(2.2rem, 4vw, 3.8rem);
+}
 
-	/* --- Misc ---
-	--tag-padding-y: 2px;    vertical padding on tag pills
-	*/
+.surface-card {
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	background: var(--color-surface);
+	backdrop-filter: blur(14px);
+	box-shadow: 0 22px 50px var(--color-shadow);
+	padding: 1.4rem;
+}
+
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.9rem 1.35rem;
+	border-radius: var(--radius-sm);
+	background: var(--color-accent);
+	color: #fff;
+	text-decoration: none;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	transition:
+		transform 180ms ease,
+		background 180ms ease,
+		box-shadow 180ms ease;
+	box-shadow: 0 12px 22px rgba(244, 121, 32, 0.22);
+}
+
+.button:hover {
+	background: var(--color-accent-deep);
+	transform: translateY(-1px);
+}
+
+.button-secondary {
+	background: transparent;
+	color: var(--color-ink);
+	border: 1px solid var(--color-border);
+	box-shadow: none;
+}
+
+.button-small {
+	padding: 0.7rem 1rem;
+	font-size: 0.92rem;
+}
+
+.eyebrow {
+	display: inline-block;
+	font-size: 0.76rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	color: var(--color-accent);
+}
+
+.section-heading {
+	display: grid;
+	gap: 0.65rem;
+	margin-bottom: 1.6rem;
+	max-width: 72ch;
+}
+
+.section-heading h2 {
+	font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.section-heading p:last-child {
+	color: var(--color-muted);
+}
+
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 50;
+	background: rgba(255, 248, 241, 0.76);
+	backdrop-filter: blur(18px);
+	border-bottom: 1px solid rgba(109, 80, 61, 0.08);
+}
+
+.nav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	min-height: 88px;
+}
+
+.site-logo {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.9rem;
+	text-decoration: none;
+}
+
+.site-logo-img {
+	width: 68px;
+	height: 68px;
+	object-fit: contain;
+}
+
+.site-logo-copy {
+	display: grid;
+}
+
+.site-logo-copy strong {
+	font-family: var(--font-display), serif;
+	font-size: 1.3rem;
+}
+
+.site-logo-copy span {
+	font-size: 0.76rem;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: var(--color-muted);
+}
+
+.nav-links,
+.nav-actions {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.nav-links a {
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 0.95rem;
+}
+
+.nav-admin {
+	text-decoration: none;
+	font-size: 0.92rem;
+	color: var(--color-muted);
+}
+
+.mobile-nav {
+	display: none;
+}
+
+.site-footer {
+	margin-top: 2rem;
+	padding: 2.2rem 0 2.8rem;
+	border-top: 1px solid rgba(109, 80, 61, 0.1);
+}
+
+.footer-grid {
+	display: grid;
+	grid-template-columns: 1.2fr 1fr 1fr 1fr;
+	gap: 1.5rem;
+}
+
+.footer-brand p {
+	margin-top: 0.8rem;
+	max-width: 32ch;
+	color: var(--color-muted);
+}
+
+.footer-logo-img {
+	width: 96px;
+	height: auto;
+}
+
+.footer-grid h3 {
+	font-size: 1.05rem;
+	margin-bottom: 0.75rem;
+}
+
+.footer-links {
+	list-style: none;
+	padding: 0;
+	display: grid;
+	gap: 0.45rem;
+	color: var(--color-muted);
+}
+
+.footer-links a {
+	text-decoration: none;
+}
+
+.footer-bottom {
+	margin-top: 1.5rem;
+	padding-top: 1rem;
+	border-top: 1px solid rgba(109, 80, 61, 0.1);
+	color: var(--color-muted);
+	font-size: 0.92rem;
+}
+
+.empty-state {
+	text-align: center;
+	display: grid;
+	gap: 1rem;
+}
+
+.page-copy :global(p),
+.home-story__copy :global(p) {
+	color: var(--color-muted);
+}
+
+.page-copy :global(h2),
+.page-copy :global(h3),
+.home-story__copy :global(h2),
+.home-story__copy :global(h3) {
+	margin-top: 1.25rem;
+	margin-bottom: 0.6rem;
+}
+
+.page-copy :global(ul),
+.page-copy :global(ol),
+.home-story__copy :global(ul),
+.home-story__copy :global(ol) {
+	padding-left: 1.1rem;
+	color: var(--color-muted);
+}
+
+.page-copy :global(a),
+.home-story__copy :global(a) {
+	color: var(--color-accent-deep);
+}
+
+@media (max-width: 1020px) {
+	.nav-links,
+	.nav-actions {
+		display: none;
+	}
+
+	.mobile-nav {
+		display: block;
+	}
+
+	.mobile-nav summary {
+		list-style: none;
+		cursor: pointer;
+		padding: 0.85rem 1.1rem;
+		border-radius: var(--radius-sm);
+		background: #fffaf1;
+		border: 1px solid var(--color-border);
+		font-weight: 700;
+	}
+
+	.mobile-nav__panel {
+		position: absolute;
+		right: 1.5rem;
+		top: calc(100% + 0.5rem);
+		min-width: 260px;
+		display: grid;
+		gap: 0.8rem;
+	}
+
+	.mobile-nav__panel a {
+		text-decoration: none;
+	}
+
+	.footer-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media (max-width: 640px) {
+	.container,
+	.section-shell {
+		width: min(var(--site-max), calc(100% - 1.5rem));
+	}
+
+	.nav {
+		min-height: 76px;
+	}
+
+	.site-logo-img {
+		width: 56px;
+		height: 56px;
+	}
+
+	.footer-grid {
+		grid-template-columns: 1fr;
+	}
 }

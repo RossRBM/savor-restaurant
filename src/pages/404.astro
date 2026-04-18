@@ -3,31 +3,27 @@ import Base from "../layouts/Base.astro";
 ---
 
 <Base title="Page not found">
-	<div class="not-found">
-		<h1>404</h1>
-		<p>The page you're looking for doesn't exist.</p>
-		<a href="/">Go back home</a>
-	</div>
+	<section class="section-shell">
+		<div class="not-found surface-card">
+			<p class="eyebrow">404</p>
+			<h1>That page is not on the menu.</h1>
+			<p>The link may have moved during the WordPress to EmDash rebuild.</p>
+			<a class="button" href="/">Back to Savor</a>
+		</div>
+	</section>
 </Base>
 
 <style>
 	.not-found {
 		text-align: center;
-		padding: var(--spacing-24) var(--spacing-6);
+		padding: 3rem;
 	}
 
 	.not-found h1 {
-		font-size: var(--font-size-5xl);
-		margin-bottom: var(--spacing-2);
-		color: var(--color-border);
+		margin: 0.4rem 0 0.8rem;
 	}
 
 	.not-found p {
-		color: var(--color-muted);
-		margin-bottom: var(--spacing-6);
-	}
-
-	.not-found a {
-		color: var(--color-text);
+		margin-bottom: 1.2rem;
 	}
 </style>

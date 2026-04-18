@@ -1,0 +1,124 @@
+---
+interface MenuCard {
+	title?: string;
+	price?: string;
+	secondary_price?: string;
+	description?: string;
+	image_url?: string;
+}
+
+interface Section {
+	title: string;
+	description?: string;
+	items: Array<{ data: MenuCard }>;
+}
+
+interface Props {
+	sections: Section[];
+}
+
+const { sections } = Astro.props;
+---
+
+{
+	sections.map((section) => (
+		<section class="menu-board section-shell" id={section.title.toLowerCase().replace(/\s+/g, "-")}>
+			<div class="section-heading menu-board__heading">
+				<p class="eyebrow">{section.title}</p>
+				{section.description && <p>{section.description}</p>}
+			</div>
+			<div class="menu-board__grid">
+				{section.items.map(({ data }) => (
+					<article class="menu-board__card surface-card">
+						{data.image_url && (
+							<img src={data.image_url} alt={data.title || "Menu item"} loading="lazy" />
+						)}
+						<div class="menu-board__content">
+							<div class="menu-board__meta">
+								<h3>{data.title}</h3>
+								<div class="menu-board__prices">
+									{data.price && <span>{data.price}</span>}
+									{data.secondary_price && <span>{data.secondary_price}</span>}
+								</div>
+							</div>
+							{data.description && <p>{data.description}</p>}
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+	))
+}
+
+<style>
+	.menu-board__heading {
+		margin-bottom: 1.25rem;
+	}
+
+	.menu-board__grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+	}
+
+	.menu-board__card {
+		padding: 0;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.menu-board__card img {
+		width: 100%;
+		aspect-ratio: 16 / 11;
+		object-fit: cover;
+		display: block;
+	}
+
+	.menu-board__content {
+		padding: 1.15rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		height: 100%;
+	}
+
+	.menu-board__meta {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		align-items: flex-start;
+	}
+
+	.menu-board__meta h3 {
+		font-size: 1.15rem;
+	}
+
+	.menu-board__prices {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.2rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		color: var(--color-accent);
+		white-space: nowrap;
+	}
+
+	.menu-board__content p {
+		color: var(--color-muted);
+		font-size: 0.95rem;
+	}
+
+	@media (max-width: 960px) {
+		.menu-board__grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	@media (max-width: 700px) {
+		.menu-board__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

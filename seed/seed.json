@@ -2,254 +2,170 @@
 	"$schema": "https://emdashcms.com/seed.schema.json",
 	"version": "1",
 	"meta": {
-		"name": "Blog Starter",
-		"description": "A blog with posts and pages",
-		"author": "EmDash"
+		"name": "Savor Restaurant",
+		"description": "Restaurant and private events site for Savor Restaurant in Somerville, New Jersey",
+		"author": "Codex for Savor"
 	},
-
 	"settings": {
-		"title": "My Blog",
-		"tagline": "Thoughts on building for the web"
+		"title": "Savor Restaurant",
+		"tagline": "Somerville fine dining, private events, and takeout catering"
 	},
-
 	"collections": [
-		{
-			"slug": "posts",
-			"label": "Posts",
-			"labelSingular": "Post",
-			"supports": ["drafts", "revisions", "search", "seo"],
-			"commentsEnabled": true,
-			"fields": [
-				{
-					"slug": "title",
-					"label": "Title",
-					"type": "string",
-					"required": true,
-					"searchable": true
-				},
-				{
-					"slug": "featured_image",
-					"label": "Featured Image",
-					"type": "image"
-				},
-				{
-					"slug": "content",
-					"label": "Content",
-					"type": "portableText",
-					"searchable": true
-				},
-				{
-					"slug": "excerpt",
-					"label": "Excerpt",
-					"type": "text"
-				}
-			]
-		},
 		{
 			"slug": "pages",
 			"label": "Pages",
 			"labelSingular": "Page",
-			"supports": ["drafts", "revisions", "search"],
+			"supports": ["drafts", "revisions", "seo"],
 			"fields": [
+				{ "slug": "title", "label": "Title", "type": "string", "required": true },
 				{
-					"slug": "title",
-					"label": "Title",
-					"type": "string",
+					"slug": "template",
+					"label": "Template",
+					"type": "select",
 					"required": true,
-					"searchable": true
+					"validation": {
+						"options": ["Home", "Standard", "Events", "Menu", "Catering", "Delivery", "Policy"]
+					}
+				},
+				{ "slug": "nav_label", "label": "Navigation Label", "type": "string" },
+				{ "slug": "eyebrow", "label": "Eyebrow", "type": "string" },
+				{ "slug": "headline", "label": "Headline", "type": "string" },
+				{ "slug": "intro", "label": "Intro", "type": "text", "options": { "rows": 4 } },
+				{ "slug": "hero_image", "label": "Hero Image URL", "type": "string" },
+				{ "slug": "body", "label": "Body", "type": "portableText" },
+				{ "slug": "primary_cta_label", "label": "Primary CTA Label", "type": "string" },
+				{ "slug": "primary_cta_url", "label": "Primary CTA URL", "type": "string" },
+				{ "slug": "secondary_cta_label", "label": "Secondary CTA Label", "type": "string" },
+				{ "slug": "secondary_cta_url", "label": "Secondary CTA URL", "type": "string" }
+			]
+		},
+		{
+			"slug": "menu_items",
+			"label": "Menu Items",
+			"labelSingular": "Menu Item",
+			"supports": ["drafts", "search"],
+			"fields": [
+				{ "slug": "title", "label": "Name", "type": "string", "required": true, "searchable": true },
+				{
+					"slug": "menu_page",
+					"label": "Menu Page",
+					"type": "select",
+					"required": true,
+					"validation": { "options": ["Restaurant Menu", "Takeout Catering"] }
 				},
 				{
-					"slug": "content",
-					"label": "Content",
-					"type": "portableText",
-					"searchable": true
-				}
-			]
-		}
-	],
-
-	"taxonomies": [
-		{
-			"name": "category",
-			"label": "Categories",
-			"labelSingular": "Category",
-			"hierarchical": true,
-			"collections": ["posts"],
-			"terms": [
-				{ "slug": "development", "label": "Development" },
-				{ "slug": "design", "label": "Design" },
-				{ "slug": "notes", "label": "Notes" }
+					"slug": "section",
+					"label": "Section",
+					"type": "select",
+					"required": true,
+					"validation": {
+						"options": [
+							"Lunch Appetizers",
+							"Lunch Soups",
+							"Lunch Salads",
+							"Lunch Homemade Pasta",
+							"Lunch Entrees",
+							"Dinner Appetizers",
+							"Dinner Soups",
+							"Dinner Salads",
+							"Dinner Homemade Pasta",
+							"Dinner Entrees",
+							"Dessert",
+							"Salads",
+							"Appetizers",
+							"Homemade Pasta",
+							"Entrees",
+							"Packages"
+						]
+					}
+				},
+				{ "slug": "price", "label": "Primary Price", "type": "string" },
+				{ "slug": "secondary_price", "label": "Secondary Price", "type": "string" },
+				{ "slug": "description", "label": "Description", "type": "text", "options": { "rows": 3 } },
+				{ "slug": "image_url", "label": "Image URL", "type": "string" },
+				{ "slug": "sort_order", "label": "Sort Order", "type": "integer", "defaultValue": 0 },
+				{ "slug": "featured", "label": "Featured on Home", "type": "boolean", "defaultValue": false }
 			]
 		},
 		{
-			"name": "tag",
-			"label": "Tags",
-			"labelSingular": "Tag",
-			"hierarchical": false,
-			"collections": ["posts"],
-			"terms": [
-				{ "slug": "webdev", "label": "Web Development" },
-				{ "slug": "opinion", "label": "Opinion" },
-				{ "slug": "tools", "label": "Tools" },
-				{ "slug": "creativity", "label": "Creativity" }
+			"slug": "team_members",
+			"label": "Team Members",
+			"labelSingular": "Team Member",
+			"supports": ["drafts"],
+			"fields": [
+				{ "slug": "title", "label": "Name", "type": "string", "required": true },
+				{ "slug": "role", "label": "Role", "type": "string" },
+				{ "slug": "bio", "label": "Bio", "type": "text", "options": { "rows": 4 } },
+				{ "slug": "image_url", "label": "Image URL", "type": "string" },
+				{ "slug": "sort_order", "label": "Sort Order", "type": "integer", "defaultValue": 0 }
+			]
+		},
+		{
+			"slug": "testimonials",
+			"label": "Testimonials",
+			"labelSingular": "Testimonial",
+			"supports": ["drafts"],
+			"fields": [
+				{ "slug": "title", "label": "Guest Name", "type": "string", "required": true },
+				{ "slug": "quote", "label": "Quote", "type": "text", "required": true, "options": { "rows": 5 } },
+				{ "slug": "source", "label": "Source", "type": "string" },
+				{ "slug": "sort_order", "label": "Sort Order", "type": "integer", "defaultValue": 0 }
+			]
+		},
+		{
+			"slug": "awards",
+			"label": "Awards",
+			"labelSingular": "Award",
+			"supports": ["drafts"],
+			"fields": [
+				{ "slug": "title", "label": "Title", "type": "string", "required": true },
+				{ "slug": "image_url", "label": "Image URL", "type": "string" },
+				{ "slug": "link_url", "label": "Link URL", "type": "string" },
+				{ "slug": "sort_order", "label": "Sort Order", "type": "integer", "defaultValue": 0 }
 			]
 		}
 	],
-
-	"bylines": [
-		{
-			"id": "byline-editorial",
-			"slug": "emdash-editorial",
-			"displayName": "EmDash Editorial"
-		},
-		{
-			"id": "byline-guest",
-			"slug": "guest-contributor",
-			"displayName": "Guest Contributor",
-			"isGuest": true
-		}
-	],
-
 	"menus": [
 		{
 			"name": "primary",
 			"label": "Primary Navigation",
 			"items": [
 				{ "type": "custom", "label": "Home", "url": "/" },
-				{ "type": "custom", "label": "About", "url": "/pages/about" },
-				{ "type": "custom", "label": "Posts", "url": "/posts" }
+				{ "type": "custom", "label": "Private Events", "url": "/privateeventvenu/" },
+				{ "type": "custom", "label": "Corporate Events", "url": "/businessprivateeventvenue/" },
+				{ "type": "custom", "label": "Bridal Showers", "url": "/bridal-shower-and-rehearsal-private-event-venue/" },
+				{ "type": "custom", "label": "Menu", "url": "/savorrestaurantmenu/" },
+				{ "type": "custom", "label": "Delivery", "url": "/delivery-menu/" },
+				{ "type": "custom", "label": "Catering", "url": "/takeout-catering/" }
 			]
 		}
 	],
-
-	"widgetAreas": [
-		{
-			"name": "sidebar",
-			"label": "Sidebar",
-			"description": "Widget area displayed on single post pages",
-			"widgets": [
-				{
-					"type": "component",
-					"componentId": "core:search",
-					"title": "Search"
-				},
-				{
-					"type": "component",
-					"componentId": "core:categories",
-					"title": "Categories"
-				},
-				{
-					"type": "component",
-					"componentId": "core:tags",
-					"title": "Tags"
-				},
-				{
-					"type": "component",
-					"componentId": "core:recent-posts",
-					"title": "Recent Posts",
-					"settings": {
-						"count": 5,
-						"showDate": true
-					}
-				},
-				{
-					"type": "component",
-					"componentId": "core:archives",
-					"title": "Archives",
-					"settings": {
-						"type": "monthly",
-						"limit": 6
-					}
-				}
-			]
-		},
-		{
-			"name": "footer",
-			"label": "Footer",
-			"description": "Widget area displayed in the site footer",
-			"widgets": [
-				{
-					"type": "content",
-					"title": "About",
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "A blog about software, design, and the occasional stray thought."
-								}
-							]
-						}
-					]
-				}
-			]
-		}
-	],
-
-	"sections": [
-		{
-			"slug": "newsletter-signup",
-			"title": "Newsletter Signup",
-			"description": "A call-to-action block for newsletter subscriptions",
-			"keywords": ["newsletter", "subscribe", "email", "cta"],
-			"source": "theme",
-			"content": [
-				{
-					"_type": "block",
-					"style": "h3",
-					"children": [{ "_type": "span", "text": "Stay in the loop" }]
-				},
-				{
-					"_type": "block",
-					"style": "normal",
-					"children": [
-						{
-							"_type": "span",
-							"text": "Get notified when new posts are published. No spam, unsubscribe anytime."
-						}
-					]
-				}
-			]
-		},
-		{
-			"slug": "about-author",
-			"title": "About the Author",
-			"description": "Brief author bio for use in posts or pages",
-			"keywords": ["author", "bio", "about"],
-			"source": "theme",
-			"content": [
-				{
-					"_type": "block",
-					"style": "normal",
-					"children": [
-						{
-							"_type": "span",
-							"text": "A software developer who writes about building things on the web. Based somewhere with good coffee and reliable internet."
-						}
-					]
-				}
-			]
-		}
-	],
-
 	"content": {
 		"pages": [
 			{
-				"id": "about",
-				"slug": "about",
+				"id": "home",
+				"slug": "home",
 				"status": "published",
 				"data": {
-					"title": "About",
-					"content": [
+					"title": "Home",
+					"template": "Home",
+					"nav_label": "Home",
+					"eyebrow": "Est. 2013 • Somerville, New Jersey",
+					"headline": "Fine dining, private events, and fresh Italian American favorites.",
+					"intro": "Savor is a BYOB restaurant in downtown Somerville known for intimate private rooms, warm hospitality, and a menu built around homemade pasta, polished entrees, and dependable event service.",
+					"hero_image": "/images/home/hero.jpg",
+					"primary_cta_label": "Reservations",
+					"primary_cta_url": "https://resy.com/cities/svl/savor-restaurant",
+					"secondary_cta_label": "Private Events",
+					"secondary_cta_url": "/privateeventvenu/",
+					"body": [
 						{
 							"_type": "block",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"text": "A place for writing about software, design, and the occasional stray thought. No posting schedule, no newsletter funnel. Just things I wanted to write down."
+									"text": "Savor has happily served thousands of guests from Somerville and beyond with a style of service that feels polished without being stiff. Lunch, dinner, showers, rehearsal dinners, repasts, birthdays, and business gatherings all share the same attention to detail."
 								}
 							]
 						},
@@ -259,7 +175,303 @@
 							"children": [
 								{
 									"_type": "span",
-									"text": "Built with Astro and EmDash. The source is open if you want to see how it works."
+									"text": "The dining room focuses on real food made fresh: house salads, classic starters, homemade pasta, seafood, steak, and event menus shaped around the occasion. Add BYOB flexibility and experienced event coordination, and Savor becomes an easy answer for both dinner reservations and milestone moments."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "privateeventvenu",
+				"slug": "privateeventvenu",
+				"status": "published",
+				"data": {
+					"title": "Private Event Venue",
+					"template": "Events",
+					"nav_label": "Private Events",
+					"eyebrow": "Celebrate at Savor",
+					"headline": "A polished private event venue for showers, birthdays, repasts, and family gatherings.",
+					"intro": "Our experienced team works closely with you to create the right room, menu, and pacing for the occasion.",
+					"hero_image": "/images/events/private-room-hero.jpg",
+					"primary_cta_label": "Call About Availability",
+					"primary_cta_url": "tel:+19086851975",
+					"secondary_cta_label": "Corporate Events",
+					"secondary_cta_url": "/businessprivateeventvenue/",
+					"body": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We would love to host your next private event. Savor Restaurant is well prepared for joyful celebrations such as baby and bridal showers, as well as more reflective gatherings such as repasts and receptions."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Celebrate at Savor for baptisms, communions, confirmations, bar and bat mitzvahs, graduations, birthdays, engagements, rehearsals, promotions, anniversaries, or simply because your group wants a room that feels special."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our goal is to make the day memorable for the right reasons: smooth planning, attentive service, and food guests will talk about afterward."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "businessprivateeventvenue",
+				"slug": "businessprivateeventvenue",
+				"status": "published",
+				"data": {
+					"title": "Corporate & Business Private Event Venue",
+					"template": "Events",
+					"nav_label": "Corporate Events",
+					"eyebrow": "Business Dining",
+					"headline": "Host client dinners, team celebrations, and business meetings in a room that feels refined and easy.",
+					"intro": "Savor combines contemporary dining rooms, flexible private spaces, and attentive service for professional events of many sizes.",
+					"hero_image": "/images/events/corporate-hero.jpg",
+					"primary_cta_label": "Plan a Business Event",
+					"primary_cta_url": "mailto:Cater@savornjrestaurant.com",
+					"secondary_cta_label": "Private Events",
+					"secondary_cta_url": "/privateeventvenu/",
+					"body": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Step into a world of tasteful design, ambient lighting, and hospitality that supports both intimate business dinners and larger team gatherings. The spaces feel elevated without losing warmth."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Whether you need a quiet room for a board dinner or want to celebrate a company milestone with a broader guest list, Savor offers flexible spaces and menus that make planning straightforward."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our event team keeps the experience polished from inquiry through dessert so you can focus on the meeting, the clients, or the people you invited."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "bridal-shower-and-rehearsal-private-event-venue",
+				"slug": "bridal-shower-and-rehearsal-private-event-venue",
+				"status": "published",
+				"data": {
+					"title": "Bridal Showers and Rehearsal Dinners",
+					"template": "Events",
+					"nav_label": "Bridal Showers",
+					"eyebrow": "Wedding Celebrations",
+					"headline": "An elegant room for bridal showers, rehearsal dinners, and the people who matter most.",
+					"intro": "Savor offers a fresh change of scenery, balancing comfort, hospitality, and polished dining for wedding weekend gatherings.",
+					"hero_image": "/images/events/bridal-hero.jpg",
+					"primary_cta_label": "Ask About Room Sizes",
+					"primary_cta_url": "mailto:Cater@savornjrestaurant.com",
+					"secondary_cta_label": "View Private Rooms",
+					"secondary_cta_url": "/privateeventvenu/",
+					"body": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Bridal showers and rehearsal dinners deserve a room that feels celebratory from the moment guests arrive. Our private spaces offer a calm, elegant backdrop with menus built around your group."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Choose from rooms holding roughly 14 to 80 people, then work with us on timing, seating, and the pace of the meal. We keep it easy to host while still making the day feel meaningful."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "savorrestaurantmenu",
+				"slug": "savorrestaurantmenu",
+				"status": "published",
+				"data": {
+					"title": "Savor Restaurant Menu",
+					"template": "Menu",
+					"nav_label": "Menu",
+					"eyebrow": "Restaurant Menu",
+					"headline": "Real food, made fresh for lunch, dinner, dessert, and special occasions.",
+					"intro": "Browse a representative selection of Savor favorites, from house salads and classic starters to homemade pasta, seafood, steak, and gelato.",
+					"hero_image": "/images/menu/menu-hero.jpg",
+					"primary_cta_label": "Reservations",
+					"primary_cta_url": "https://resy.com/cities/svl/savor-restaurant",
+					"secondary_cta_label": "Delivery Menu",
+					"secondary_cta_url": "/delivery-menu/",
+					"body": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Lunch is served until 3:00p and dinner reservations are recommended for busy evenings. Because Savor is BYOB, guests can pair their favorite bottles with handmade pasta, signature entrees, and desserts."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "delivery-menu",
+				"slug": "delivery-menu",
+				"status": "published",
+				"data": {
+					"title": "Delivery Menu",
+					"template": "Delivery",
+					"nav_label": "Delivery",
+					"eyebrow": "Order In",
+					"headline": "Enjoy Savor at home with takeout and delivery from our Somerville kitchen.",
+					"intro": "Order Italian American favorites for pickup or delivery, then use the parking map and app links if you are stopping by.",
+					"hero_image": "/images/home/interior-detail.jpg",
+					"primary_cta_label": "Order Online",
+					"primary_cta_url": "https://ordering.app2food.com/",
+					"secondary_cta_label": "Restaurant Menu",
+					"secondary_cta_url": "/savorrestaurantmenu/",
+					"body": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Savor Restaurant in Somerville offers takeout and delivery so you can enjoy house salads, pasta, seafood, and specials from home. Pickup and delivery availability may vary by time and location."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Need food for a larger group instead? Visit our takeout catering page for tray pricing and downloadable catering menus."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "takeout-catering",
+				"slug": "takeout-catering",
+				"status": "published",
+				"data": {
+					"title": "Take Out Catering",
+					"template": "Catering",
+					"nav_label": "Catering",
+					"eyebrow": "Takeout Catering",
+					"headline": "Half trays, full trays, and crowd-ready catering for your next event.",
+					"intro": "All options are priced by half and full trays, making it easy to feed office lunches, family celebrations, and at-home parties.",
+					"hero_image": "/images/events/private-room-wide.jpg",
+					"primary_cta_label": "Email Catering",
+					"primary_cta_url": "mailto:Cater@savornjrestaurant.com",
+					"secondary_cta_label": "Private Events",
+					"secondary_cta_url": "/privateeventvenu/",
+					"body": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Takeout catering from Savor is designed for real hosting: trays that travel well, portions that make sense, and menus familiar enough to please a room full of guests."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Half trays typically serve 10 to 12 guests and full trays typically serve 20 to 25 guests. Download the lunch and dinner catering PDFs for expanded offerings and pricing."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "privacypolicy",
+				"slug": "privacypolicy",
+				"status": "published",
+				"data": {
+					"title": "Privacy Policy",
+					"template": "Policy",
+					"nav_label": "Privacy Policy",
+					"eyebrow": "Privacy",
+					"headline": "How Savor Restaurant handles website inquiries and reservations.",
+					"intro": "This site exists to share restaurant information, event details, and contact options for Savor Restaurant.",
+					"hero_image": "/images/home/interior-detail.jpg",
+					"body": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "When you contact Savor through email, reservations, or ordering links, the information you submit is used to respond to your inquiry, manage your reservation, or fulfill your order."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "External services such as Resy, App2Food, social media platforms, and gift card providers operate under their own privacy practices. Please review those services directly if you share information through them."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Questions about this site or your data can be sent to Cater@savornjrestaurant.com."
 								}
 							]
 						}
@@ -267,510 +479,705 @@
 				}
 			}
 		],
-		"posts": [
+		"menu_items": [
 			{
-				"id": "post-1",
-				"slug": "building-for-the-long-term",
+				"id": "lunch-caprese",
+				"slug": "lunch-caprese",
 				"status": "published",
 				"data": {
-					"title": "Building for the Long Term",
-					"excerpt": "The frameworks will change. The databases will change. What survives is the clarity of your thinking.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&h=800&fit=crop",
-							"alt": "Code on a monitor in a dark room",
-							"filename": "building-long-term.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Every few years the industry collectively decides that everything we've been doing is wrong and there's a better way. New frameworks, new paradigms, new build tools. The churn is relentless, and if you're not careful, you spend more time migrating than building."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "I've been writing software long enough to have seen several of these cycles. jQuery to Backbone to Angular to React to whatever comes next. Each transition felt urgent at the time. Looking back, the things that actually mattered were rarely about the framework."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [{ "_type": "span", "text": "What survives" }]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Clean data models survive. Clear boundaries between systems survive. Good naming survives. The decision to keep things simple when you could have made them clever - that definitely survives."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "What doesn't survive is code that was written to impress, abstractions built for problems that never materialized, and architectures designed around a framework's opinions rather than the domain's reality."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The best code I've written is boring. It reads like prose, does one thing well, and doesn't require a PhD in category theory to understand. The worst code I've written was technically impressive at the time."
-								}
-							]
-						}
-					]
-				},
-				"bylines": [
-					{ "byline": "byline-editorial" },
-					{ "byline": "byline-guest", "roleLabel": "Guest essay" }
-				],
-				"taxonomies": {
-					"category": ["development"],
-					"tag": ["opinion"]
+					"title": "Caprese",
+					"menu_page": "Restaurant Menu",
+					"section": "Lunch Appetizers",
+					"price": "$14",
+					"description": "Beefsteak tomato, garden basil, handmade fresh mozzarella, extra virgin olive oil.",
+					"image_url": "/images/menu/caprese.webp",
+					"sort_order": 10,
+					"featured": true
 				}
 			},
 			{
-				"id": "post-2",
-				"slug": "the-case-for-static",
+				"id": "lunch-artichoke",
+				"slug": "lunch-artichoke-hearts-francaise",
 				"status": "published",
 				"data": {
-					"title": "The Case for Static",
-					"excerpt": "Static sites aren't a step backwards. They're what you get when you take performance and simplicity seriously.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&h=800&fit=crop",
-							"alt": "Laptop and coffee on a wooden table",
-							"filename": "case-for-static.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "There's a certain irony in the fact that the web started static, went dynamic, and is now swinging back toward static again. But the static sites of today aren't the hand-coded HTML pages of 1998. They're generated, optimized, and deployed to edge networks that serve them in milliseconds."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The pitch for server-rendered everything was compelling: dynamic content, personalization, real-time data. But most sites don't need most of that most of the time. A blog post doesn't need to be rendered on every request. A product page doesn't change every second."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [{ "_type": "span", "text": "The performance argument" }]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "A static file served from a CDN is as fast as the web gets. No cold starts, no database queries, no server-side rendering overhead. The Time to First Byte is essentially the network latency to your nearest edge node. You can't beat physics."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "And when you do need dynamic behavior, you can add it surgically. An island of interactivity in a sea of static HTML. The best of both worlds, without paying the cost of either at all times."
-								}
-							]
-						}
-					]
-				},
-				"bylines": [{ "byline": "byline-editorial" }],
-				"taxonomies": {
-					"category": ["development"],
-					"tag": ["webdev", "opinion"]
+					"title": "Artichoke Hearts Francaise",
+					"menu_page": "Restaurant Menu",
+					"section": "Lunch Appetizers",
+					"price": "$14",
+					"description": "Classic lemon butter sauce.",
+					"image_url": "/images/menu/artichoke-hearts-francaise.jpg",
+					"sort_order": 20,
+					"featured": true
 				}
 			},
 			{
-				"id": "post-3",
-				"slug": "learning-in-public",
+				"id": "lunch-soup",
+				"slug": "lunch-soup-du-jour",
 				"status": "published",
 				"data": {
-					"title": "Learning in Public",
-					"excerpt": "Writing about what you're learning is the fastest way to find out what you don't actually understand.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?w=1200&h=800&fit=crop",
-							"alt": "Notebook and pen on a desk",
-							"filename": "learning-in-public.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "I started writing about things I was learning not because I had anything original to say, but because I kept forgetting what I'd figured out. The blog posts were notes to my future self, published publicly more out of laziness than courage."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "What I didn't expect was how much the writing itself would accelerate the learning. There's a particular kind of clarity that comes from trying to explain something to someone else. The gaps in your understanding, which you can happily ignore when the knowledge lives only in your head, become painfully obvious when you try to put it into sentences."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [{ "_type": "span", "text": "The fear of being wrong" }]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The biggest barrier isn't time or writing skill. It's the fear of publishing something that turns out to be wrong. But here's the thing: being wrong publicly is one of the most efficient ways to learn. Someone will correct you, often kindly, and you'll remember that correction forever."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The posts that helped me most weren't written by experts. They were written by people one step ahead of me on the same path, in language that hadn't yet been polished into abstraction. There's a place for that kind of writing, and it's more valuable than most people realize."
-								}
-							]
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["notes"],
-					"tag": ["opinion"]
+					"title": "Soup Du Jour",
+					"menu_page": "Restaurant Menu",
+					"section": "Lunch Soups",
+					"price": "Mkt Price",
+					"description": "Ask about the daily soup prepared in the kitchen.",
+					"sort_order": 30
 				}
 			},
 			{
-				"id": "post-4",
-				"slug": "small-tools-big-impact",
+				"id": "lunch-house-salad",
+				"slug": "lunch-house-salad",
 				"status": "published",
 				"data": {
-					"title": "Small Tools, Big Impact",
-					"excerpt": "The best developer tools do one thing well and get out of your way. A love letter to focused software.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1575026615908-666710ae5e47?w=1200&h=800&fit=crop",
-							"alt": "Wrenches and hand tools hanging on a workshop wall",
-							"filename": "small-tools.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "There's a class of software that doesn't get enough appreciation. Not the frameworks or the platforms or the IDEs, but the small, sharp tools that solve one problem so well you stop thinking about them. They become invisible, which is the highest compliment you can pay a tool."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "I'm talking about things like ripgrep, which searches code so fast it changed how I think about searching. Or jq, which makes JSON feel like a first-class data format in the terminal. Or curl, which has been quietly powering the internet's plumbing for decades."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [{ "_type": "span", "text": "The Unix philosophy, revisited" }]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Do one thing well. The advice is old enough to be a cliche, but the best modern tools still follow it. They don't try to be platforms. They don't have plugin ecosystems or configuration languages or startup wizards. They do their job and they compose with other tools that do theirs."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The temptation is always to add more. One more feature, one more option, one more integration. But every addition is a decision someone has to make, a path through the code that has to be maintained, a thing that can break. The best tools resist this. They stay small, and in staying small, they stay reliable."
-								}
-							]
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["development"],
-					"tag": ["tools"]
+					"title": "House Salad",
+					"menu_page": "Restaurant Menu",
+					"section": "Lunch Salads",
+					"price": "$11",
+					"description": "Mixed greens with balsamic vinaigrette.",
+					"sort_order": 40
 				}
 			},
 			{
-				"id": "post-5",
-				"slug": "designing-with-constraints",
+				"id": "lunch-caesar-salad",
+				"slug": "lunch-caesar-salad",
 				"status": "published",
 				"data": {
-					"title": "Designing with Constraints",
-					"excerpt": "Limitations aren't obstacles to creativity. They're the structure that makes creativity possible.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=1200&h=800&fit=crop",
-							"alt": "Pencils and design tools on a desk",
-							"filename": "designing-with-constraints.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Give a designer a blank canvas and unlimited time, and they'll often produce something mediocre. Give them a tight brief, a small screen, and a deadline, and they'll surprise you. This isn't a paradox - it's how creativity actually works."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Constraints force decisions. When you can't use more than two typefaces, you have to choose carefully. When the page has to load in under a second, every element earns its place. When the interface has to work on a 320px screen, you discover what's truly essential."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [{ "_type": "span", "text": "Embracing the box" }]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The web itself is a constraint. HTML flows in one direction. CSS has a box model. Browsers have viewport sizes and font rendering quirks. You can fight these constraints or you can work with them, and the results are dramatically different."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The designs I admire most don't look like they were forced through a framework. They look like they grew naturally from the medium, respecting its grain rather than working against it. That only happens when you treat constraints as creative partners rather than enemies."
-								}
-							]
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["design"],
-					"tag": ["creativity"]
+					"title": "Caesar Salad",
+					"menu_page": "Restaurant Menu",
+					"section": "Lunch Salads",
+					"price": "$11",
+					"description": "Romaine, pecorino romano, croutons, classic Caesar dressing.",
+					"image_url": "/images/menu/caesar-salad.jpg",
+					"sort_order": 50
 				}
 			},
 			{
-				"id": "post-6",
-				"slug": "a-weekend-with-a-side-project",
+				"id": "lunch-savor-salad",
+				"slug": "lunch-savor-salad",
 				"status": "published",
 				"data": {
-					"title": "A Weekend with a Side Project",
-					"excerpt": "No stakeholders, no deadlines, no Jira tickets. Just you and a dumb idea that might turn into something.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=1200&h=800&fit=crop",
-							"alt": "Code on a screen with a dark theme",
-							"filename": "weekend-side-project.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Saturday morning. Coffee's made, the house is quiet, and I've got an idea that's been nagging at me all week. Not a good idea, necessarily - just a persistent one. A small tool that does a thing I keep doing manually. How hard could it be?"
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "This is the best kind of programming. No requirements document, no sprint planning, no pull request reviews. Just a text editor and a problem. The freedom to make terrible architectural decisions, rewrite everything twice, and follow tangents that turn out to be dead ends."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [{ "_type": "span", "text": "Why side projects matter" }]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Side projects are where you learn things your day job would never teach you. Not because the problems are harder, but because you're free to take risks. Try a language you've never used. Build something without a framework. Deploy to a platform you've only read about. The stakes are zero, which makes the learning maximum."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "By Sunday evening, the thing sort of works. It's rough, the error handling is nonexistent, and the README is a single sentence. But it solves the problem I set out to solve, and I learned three things I didn't know on Friday. Not a bad weekend."
-								}
-							]
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["development"],
-					"tag": ["creativity"]
+					"title": "Savor Salad",
+					"menu_page": "Restaurant Menu",
+					"section": "Lunch Salads",
+					"price": "$13",
+					"description": "Spinach, roasted beets, sunflower seeds, goat cheese, honey Dijon vinaigrette.",
+					"image_url": "/images/menu/savor-salad.jpeg",
+					"sort_order": 60,
+					"featured": true
 				}
 			},
 			{
-				"id": "post-7",
-				"slug": "notes-on-simplicity",
+				"id": "lunch-linguine-provencal",
+				"slug": "lunch-linguine-provencal",
 				"status": "published",
 				"data": {
-					"title": "Notes on Simplicity",
-					"excerpt": "Simplicity isn't the absence of complexity. It's the result of understanding a problem well enough to solve it cleanly.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1559051668-e1fa58f25786?w=1200&h=800&fit=crop",
-							"alt": "Geometric pattern carved into white paper",
-							"filename": "notes-on-simplicity.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Every piece of software starts simple. A few files, a clear purpose, a small surface area. Then features get added, edge cases get handled, and before long you're looking at something that requires a diagram to understand. This isn't inevitable, but it takes discipline to prevent."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The hard part of simplicity isn't the initial design. It's the ongoing resistance to complication. Every feature request, every bug fix, every refactor is an opportunity to add complexity. Saying no is the most important design skill, and the least celebrated."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [{ "_type": "span", "text": "Removing as a feature" }]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The best version of a product often has fewer features than the previous one. Not because features were missing, but because someone had the courage to remove things that weren't earning their keep. Every feature has a cost - in maintenance, in cognitive load, in the weight of the interface."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Simplicity is a practice, not a destination. You never arrive at simple. You just keep asking: is this necessary? Could this be clearer? Is there a way to solve this problem by removing something instead of adding something? The answer is yes more often than you'd expect."
-								}
-							]
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["notes"],
-					"tag": ["opinion"]
+					"title": "Homemade Linguine Provencal",
+					"menu_page": "Restaurant Menu",
+					"section": "Lunch Homemade Pasta",
+					"price": "$18",
+					"description": "Fresh tomato, basil, roasted garlic white wine sauce.",
+					"image_url": "/images/menu/homemade-linguine-provencal.jpg",
+					"sort_order": 70
 				}
 			},
 			{
-				"id": "post-draft",
-				"slug": "work-in-progress",
-				"status": "draft",
+				"id": "lunch-fusilli-bosco",
+				"slug": "lunch-fusilli-bosco",
+				"status": "published",
 				"data": {
-					"title": "Work in Progress",
-					"excerpt": "This post is still being written.",
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "This is a draft post that won't appear in the public listing."
-								}
-							]
-						}
-					]
+					"title": "Fusilli Bosco",
+					"menu_page": "Restaurant Menu",
+					"section": "Lunch Homemade Pasta",
+					"price": "$19",
+					"description": "House-made pasta with mushrooms, onions, and a light cream sauce.",
+					"sort_order": 80
+				}
+			},
+			{
+				"id": "lunch-chicken-francaise",
+				"slug": "lunch-chicken-francaise",
+				"status": "published",
+				"data": {
+					"title": "Chicken Francaise",
+					"menu_page": "Restaurant Menu",
+					"section": "Lunch Entrees",
+					"price": "$18",
+					"description": "Served with rice and vegetables.",
+					"sort_order": 90
+				}
+			},
+			{
+				"id": "lunch-salmon",
+				"slug": "lunch-faroe-island-salmon",
+				"status": "published",
+				"data": {
+					"title": "Pan Seared Faroe Island Salmon",
+					"menu_page": "Restaurant Menu",
+					"section": "Lunch Entrees",
+					"price": "$25",
+					"description": "Dijon cream sauce, rice, and vegetables.",
+					"sort_order": 100
+				}
+			},
+			{
+				"id": "dinner-caprese",
+				"slug": "dinner-caprese",
+				"status": "published",
+				"data": {
+					"title": "Caprese",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Appetizers",
+					"price": "$15",
+					"description": "Beefsteak tomato, garden basil, handmade fresh mozzarella, extra virgin olive oil.",
+					"image_url": "/images/menu/caprese.webp",
+					"sort_order": 110
+				}
+			},
+			{
+				"id": "dinner-eggplant",
+				"slug": "dinner-eggplant-stack",
+				"status": "published",
+				"data": {
+					"title": "Eggplant Stack",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Appetizers",
+					"price": "$15",
+					"description": "Fried eggplant, fresh mozzarella, roasted peppers with balsamic glaze.",
+					"image_url": "/images/menu/eggplant-stack.jpeg",
+					"sort_order": 120
+				}
+			},
+			{
+				"id": "dinner-mussels",
+				"slug": "dinner-prince-edward-island-mussels",
+				"status": "published",
+				"data": {
+					"title": "Prince Edward Island Mussels",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Appetizers",
+					"price": "$17",
+					"description": "Roasted garlic, white wine, plum tomato, basil.",
+					"image_url": "/images/menu/prince-edward-island-mussels.jpg",
+					"sort_order": 130
+				}
+			},
+			{
+				"id": "dinner-garlic-shrimp",
+				"slug": "dinner-garlic-shrimp",
+				"status": "published",
+				"data": {
+					"title": "Garlic Shrimp",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Appetizers",
+					"price": "$17",
+					"description": "Extra virgin olive oil and roasted garlic.",
+					"sort_order": 140
+				}
+			},
+			{
+				"id": "dinner-french-onion",
+				"slug": "dinner-classic-french-onion",
+				"status": "published",
+				"data": {
+					"title": "Classic French Onion",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Soups",
+					"price": "$11",
+					"description": "Crusty baguette, aged provolone, and Swiss cheese.",
+					"sort_order": 150
+				}
+			},
+			{
+				"id": "dinner-main-street-salad",
+				"slug": "dinner-main-street-salad",
+				"status": "published",
+				"data": {
+					"title": "Main Street Salad",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Salads",
+					"price": "$14",
+					"description": "Mixed greens, granny smith apples, dried cranberries, fresh mozzarella, walnuts, raspberry vinaigrette.",
+					"image_url": "/images/menu/main-street-salad.webp",
+					"sort_order": 160
+				}
+			},
+			{
+				"id": "dinner-roasted-pear-salad",
+				"slug": "dinner-roasted-pear-salad",
+				"status": "published",
+				"data": {
+					"title": "Roasted Pear Salad",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Salads",
+					"price": "$14",
+					"description": "Spinach, pecans, grape tomatoes, feta cheese, white balsamic vinaigrette.",
+					"sort_order": 170
+				}
+			},
+			{
+				"id": "dinner-linguine-provencal",
+				"slug": "dinner-linguine-provencal",
+				"status": "published",
+				"data": {
+					"title": "Homemade Linguine Provencal",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Homemade Pasta",
+					"price": "$25",
+					"description": "Fresh tomato, basil, roasted garlic white wine sauce.",
+					"image_url": "/images/menu/homemade-linguine-provencal.jpg",
+					"sort_order": 180
+				}
+			},
+			{
+				"id": "dinner-rigatoni-vodka",
+				"slug": "dinner-rigatoni-vodka",
+				"status": "published",
+				"data": {
+					"title": "Homemade Rigatoni Vodka",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Homemade Pasta",
+					"price": "$25",
+					"description": "Classic vodka sauce, prosciutto, peas, pecorino romano.",
+					"image_url": "/images/menu/homemade-rigatoni-vodka.jpg",
+					"sort_order": 190,
+					"featured": true
+				}
+			},
+			{
+				"id": "dinner-wild-mushroom-ravioli",
+				"slug": "dinner-wild-mushroom-ravioli",
+				"status": "published",
+				"data": {
+					"title": "Wild Mushroom Ravioli",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Homemade Pasta",
+					"price": "$25",
+					"description": "Ravioli with wild mushrooms and cheese, Marsala wine sauce.",
+					"image_url": "/images/menu/wild-mushroom-ravioli.webp",
+					"sort_order": 200
+				}
+			},
+			{
+				"id": "dinner-gnocchi",
+				"slug": "dinner-heirloom-purple-potato-gnocchi",
+				"status": "published",
+				"data": {
+					"title": "Heirloom Purple Potato Gnocchi",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Homemade Pasta",
+					"price": "$26",
+					"description": "Light pesto cream sauce.",
+					"image_url": "/images/menu/homemade-gnocchi-pesto.jpg",
+					"sort_order": 210,
+					"featured": true
+				}
+			},
+			{
+				"id": "dinner-orecchiette",
+				"slug": "dinner-orecchiette-italian-sausage",
+				"status": "published",
+				"data": {
+					"title": "Sundried Tomato Infused Orecchiette",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Homemade Pasta",
+					"price": "$28",
+					"description": "Italian sausage, plum tomato sauce, spinach, sun dried tomatoes.",
+					"image_url": "/images/menu/homemade-orecchiette-italian-sausage.jpg",
+					"sort_order": 220
+				}
+			},
+			{
+				"id": "dinner-chicken-rollatini",
+				"slug": "dinner-chicken-rollatini",
+				"status": "published",
+				"data": {
+					"title": "Chicken Rollatini",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Entrees",
+					"price": "$29",
+					"description": "Prosciutto, spinach, mozzarella, Marsala wine sauce, rice pilaf, and vegetables.",
+					"sort_order": 230
+				}
+			},
+			{
+				"id": "dinner-cod",
+				"slug": "dinner-baked-icelandic-cod",
+				"status": "published",
+				"data": {
+					"title": "Baked Icelandic Cod",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Entrees",
+					"price": "$32",
+					"description": "Lemon butter sauce, rice pilaf, and garden vegetables.",
+					"sort_order": 240
+				}
+			},
+			{
+				"id": "dinner-scallops",
+				"slug": "dinner-pan-seared-sea-scallops",
+				"status": "published",
+				"data": {
+					"title": "Pan Seared Sea Scallops",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Entrees",
+					"price": "$37",
+					"description": "Brown butter sauce, rice pilaf, and sauteed spinach.",
+					"sort_order": 250
+				}
+			},
+			{
+				"id": "dinner-zuppa",
+				"slug": "dinner-zuppa-di-pesce",
+				"status": "published",
+				"data": {
+					"title": "Zuppa Di Pesce",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Entrees",
+					"price": "$39",
+					"description": "Clams, mussels, scallops, shrimp, marinara, homemade squid ink infused linguini.",
+					"sort_order": 260,
+					"featured": true
+				}
+			},
+			{
+				"id": "dinner-strip-steak",
+				"slug": "dinner-angus-strip-steak",
+				"status": "published",
+				"data": {
+					"title": "Grilled Angus N.Y. Strip Steak",
+					"menu_page": "Restaurant Menu",
+					"section": "Dinner Entrees",
+					"price": "$42",
+					"description": "Pepper cream sauce, roasted potatoes, and garden vegetables.",
+					"sort_order": 270
+				}
+			},
+			{
+				"id": "dessert-pistachio-gelato",
+				"slug": "dessert-pistachio-gelato",
+				"status": "published",
+				"data": {
+					"title": "Pistachio Gelato",
+					"menu_page": "Restaurant Menu",
+					"section": "Dessert",
+					"price": "$12",
+					"description": "House dessert menu favorite.",
+					"sort_order": 280
+				}
+			},
+			{
+				"id": "dessert-lava-cake",
+				"slug": "dessert-homemade-lava-cake",
+				"status": "published",
+				"data": {
+					"title": "Homemade Chocolate Lava Cake",
+					"menu_page": "Restaurant Menu",
+					"section": "Dessert",
+					"price": "$14",
+					"description": "Rich warm chocolate cake for sharing or keeping to yourself.",
+					"sort_order": 290
+				}
+			},
+			{
+				"id": "dessert-tiramisu",
+				"slug": "dessert-homemade-tiramisu",
+				"status": "published",
+				"data": {
+					"title": "Homemade Tiramisu",
+					"menu_page": "Restaurant Menu",
+					"section": "Dessert",
+					"price": "$12",
+					"description": "Classic Italian layered dessert.",
+					"sort_order": 300
+				}
+			},
+			{
+				"id": "dessert-cannoli",
+				"slug": "dessert-homemade-cannoli",
+				"status": "published",
+				"data": {
+					"title": "Homemade Cannoli",
+					"menu_page": "Restaurant Menu",
+					"section": "Dessert",
+					"price": "$10",
+					"description": "A classic finish to the meal.",
+					"sort_order": 310
+				}
+			},
+			{
+				"id": "catering-house-salad",
+				"slug": "catering-house-salad",
+				"status": "published",
+				"data": {
+					"title": "House Salad",
+					"menu_page": "Takeout Catering",
+					"section": "Salads",
+					"price": "Half $34",
+					"secondary_price": "Full $59",
+					"description": "Simple and fresh with balsamic vinaigrette.",
+					"sort_order": 320
+				}
+			},
+			{
+				"id": "catering-savor-salad",
+				"slug": "catering-savor-salad",
+				"status": "published",
+				"data": {
+					"title": "Savor Salad",
+					"menu_page": "Takeout Catering",
+					"section": "Salads",
+					"price": "Half $44",
+					"secondary_price": "Full $79",
+					"description": "Spinach, roasted beets, sunflower seeds, goat cheese, honey Dijon vinaigrette.",
+					"sort_order": 330
+				}
+			},
+			{
+				"id": "catering-cold-antipasto",
+				"slug": "catering-cold-antipasto",
+				"status": "published",
+				"data": {
+					"title": "Cold Antipasto",
+					"menu_page": "Takeout Catering",
+					"section": "Appetizers",
+					"price": "Half $49",
+					"secondary_price": "Full $89",
+					"description": "Traditional Italian meat and cheese platter.",
+					"sort_order": 340
+				}
+			},
+			{
+				"id": "catering-artichoke",
+				"slug": "catering-artichoke-hearts-francaise",
+				"status": "published",
+				"data": {
+					"title": "Artichoke Hearts Francaise",
+					"menu_page": "Takeout Catering",
+					"section": "Appetizers",
+					"price": "Half $49",
+					"secondary_price": "Full $89",
+					"description": "One of the most requested party starters.",
+					"sort_order": 350
+				}
+			},
+			{
+				"id": "catering-rigatoni-vodka",
+				"slug": "catering-rigatoni-vodka",
+				"status": "published",
+				"data": {
+					"title": "Rigatoni Vodka",
+					"menu_page": "Takeout Catering",
+					"section": "Homemade Pasta",
+					"price": "Half $59",
+					"secondary_price": "Full $99",
+					"description": "House favorite tray for showers, office lunches, and birthdays.",
+					"sort_order": 360
+				}
+			},
+			{
+				"id": "catering-gnocchi",
+				"slug": "catering-gnocchi-pesto",
+				"status": "published",
+				"data": {
+					"title": "Gnocchi Pesto",
+					"menu_page": "Takeout Catering",
+					"section": "Homemade Pasta",
+					"price": "Half $59",
+					"secondary_price": "Full $99",
+					"description": "Fresh house-made gnocchi with light pesto cream sauce.",
+					"sort_order": 370
+				}
+			},
+			{
+				"id": "catering-orecchiette",
+				"slug": "catering-orecchiette-italian-sausage",
+				"status": "published",
+				"data": {
+					"title": "Orecchiette with Italian Sausage",
+					"menu_page": "Takeout Catering",
+					"section": "Homemade Pasta",
+					"price": "Half $65",
+					"secondary_price": "Full $125",
+					"description": "Italian sausage, plum tomato sauce, spinach, sun dried tomatoes.",
+					"sort_order": 380
+				}
+			},
+			{
+				"id": "catering-garlic-shrimp",
+				"slug": "catering-garlic-shrimp",
+				"status": "published",
+				"data": {
+					"title": "Garlic Shrimp",
+					"menu_page": "Takeout Catering",
+					"section": "Entrees",
+					"price": "Half $69",
+					"secondary_price": "Full $139",
+					"description": "A strong choice when you want seafood on the catering table.",
+					"sort_order": 390
+				}
+			},
+			{
+				"id": "catering-kobe-meatballs",
+				"slug": "catering-kobe-beef-meatballs",
+				"status": "published",
+				"data": {
+					"title": "Kobe Beef Meatballs",
+					"menu_page": "Takeout Catering",
+					"section": "Entrees",
+					"price": "Half $75",
+					"secondary_price": "Full $145",
+					"description": "A rich tray that works well for cocktail parties and buffets.",
+					"sort_order": 400
+				}
+			},
+			{
+				"id": "catering-group-package",
+				"slug": "catering-group-takeout-package",
+				"status": "published",
+				"data": {
+					"title": "Group Takeout Package",
+					"menu_page": "Takeout Catering",
+					"section": "Packages",
+					"price": "$79",
+					"description": "Limited time group package pricing highlighted on current takeout promotions.",
+					"sort_order": 410
+				}
+			}
+		],
+		"team_members": [
+			{
+				"id": "robert-petix",
+				"slug": "robert-petix",
+				"status": "published",
+				"data": {
+					"title": "Robert Petix",
+					"role": "Owner",
+					"bio": "Owner-led hospitality is a big part of why the room feels personal. Robert helps shape the dining experience guests remember.",
+					"image_url": "/images/team/robert.jpg",
+					"sort_order": 10
+				}
+			},
+			{
+				"id": "lisa-petix",
+				"slug": "lisa-petix",
+				"status": "published",
+				"data": {
+					"title": "Lisa Petix",
+					"role": "Event Coordinator",
+					"bio": "Lisa helps couples, families, and corporate planners coordinate private rooms, timing, and menus that match the occasion.",
+					"image_url": "/images/team/lisa.jpg",
+					"sort_order": 20
+				}
+			},
+			{
+				"id": "kitchen-staff",
+				"slug": "kitchen-staff",
+				"status": "published",
+				"data": {
+					"title": "Expert Kitchen Staff",
+					"role": "Kitchen Team",
+					"bio": "Fresh pasta, composed starters, and polished event menus all start with a kitchen staff that knows consistency matters.",
+					"image_url": "/images/team/kitchen.jpg",
+					"sort_order": 30
+				}
+			},
+			{
+				"id": "wait-staff",
+				"slug": "wait-staff",
+				"status": "published",
+				"data": {
+					"title": "Friendly Wait Staff",
+					"role": "Dining Room Team",
+					"bio": "Savor service is warm, confident, and practiced in handling both dinner service and rooms full of event guests.",
+					"image_url": "/images/team/waitstaff.jpg",
+					"sort_order": 40
+				}
+			}
+		],
+		"testimonials": [
+			{
+				"id": "testimonial-susan",
+				"slug": "susan-review",
+				"status": "published",
+				"data": {
+					"title": "Susan",
+					"quote": "Fantastic lunch experience with work team. Staff was friendly and efficient. Facility was clean and comfortably decorated.",
+					"source": "Google",
+					"sort_order": 10
+				}
+			},
+			{
+				"id": "testimonial-grigory",
+				"slug": "grigory-review",
+				"status": "published",
+				"data": {
+					"title": "Grigory",
+					"quote": "Great place! We’ve been here multiple times, with a small party and for a bigger birthday celebration. Always had a great time here.",
+					"source": "Google",
+					"sort_order": 20
+				}
+			},
+			{
+				"id": "testimonial-kathleen",
+				"slug": "kathleen-review",
+				"status": "published",
+				"data": {
+					"title": "Kathleen",
+					"quote": "I’ve been to this restaurant for dinner many times, as well as having a couple of shower events, and it never disappoints.",
+					"source": "Google",
+					"sort_order": 30
+				}
+			}
+		],
+		"awards": [
+			{
+				"id": "award-best-of-best",
+				"slug": "best-of-best",
+				"status": "published",
+				"data": {
+					"title": "Best Fine Dining in Somerset County",
+					"image_url": "/images/awards/bestofbest.png",
+					"sort_order": 10
+				}
+			},
+			{
+				"id": "award-bob",
+				"slug": "bob-2016",
+				"status": "published",
+				"data": {
+					"title": "Best BYOB and Banquet Facility",
+					"image_url": "/images/awards/bob-2016-logo-small.png",
+					"sort_order": 20
+				}
+			},
+			{
+				"id": "award-diners-choice",
+				"slug": "diners-choice",
+				"status": "published",
+				"data": {
+					"title": "Diners’ Choice",
+					"image_url": "/images/awards/dinerschoice.png",
+					"sort_order": 30
+				}
+			},
+			{
+				"id": "award-certificate",
+				"slug": "certificate-of-excellence",
+				"status": "published",
+				"data": {
+					"title": "Certificate of Excellence",
+					"image_url": "/images/awards/coe-500x500-1.png",
+					"sort_order": 40
+				}
+			},
+			{
+				"id": "award-weddings",
+				"slug": "nj-weddings",
+				"status": "published",
+				"data": {
+					"title": "Recommended on NJ Wedding",
+					"image_url": "/images/awards/njwedding.png",
+					"link_url": "https://www.njwedding.com/new-jersey/somerville/wedding-services/savor-restaurant",
+					"sort_order": 50
 				}
 			}
 		]

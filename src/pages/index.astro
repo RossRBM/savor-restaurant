@@ -1,450 +1,191 @@
 ---
-import { getEmDashCollection, getEntryTerms, getSiteSettings } from "emdash";
-import { Image } from "emdash/ui";
+import { getEmDashCollection, getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import AwardRibbon from "../components/AwardRibbon.astro";
+import ContactPanel from "../components/ContactPanel.astro";
+import MenuBoard from "../components/MenuBoard.astro";
+import PageHero from "../components/PageHero.astro";
+import QuoteGrid from "../components/QuoteGrid.astro";
+import StaffHighlights from "../components/StaffHighlights.astro";
+import { homeHighlights, homeMoments, savorSite } from "../data/savor";
 import Base from "../layouts/Base.astro";
-import PostCard from "../components/PostCard.astro";
-import { getReadingTime } from "../utils/reading-time";
-import { resolveBlogSiteIdentity } from "../utils/site-identity";
 
-const { entries: posts, cacheHint } = await getEmDashCollection("posts");
-const { siteTitle, siteTagline } = resolveBlogSiteIdentity(await getSiteSettings());
+const { entry: page, cacheHint } = await getEmDashEntry("pages", "home");
+const { entries: menuItems } = await getEmDashCollection("menu_items");
+const { entries: testimonials } = await getEmDashCollection("testimonials");
+const { entries: teamMembers } = await getEmDashCollection("team_members");
+const { entries: awards } = await getEmDashCollection("awards");
 
-Astro.cache.set(cacheHint);
+try {
+	Astro.cache.set(cacheHint);
+} catch {}
 
-const sortedPosts = posts.toSorted((a, b) => {
-	const dateA = a.data.publishedAt?.getTime() ?? 0;
-	const dateB = b.data.publishedAt?.getTime() ?? 0;
-	return dateB - dateA;
-});
+const sortEntries = <T extends { data: { sort_order?: number } }>(entries: T[]) =>
+	entries.toSorted((a, b) => (a.data.sort_order || 0) - (b.data.sort_order || 0));
 
-// Find the first post with a featured image for the hero
-const featuredPost = sortedPosts.find((p) => p.data.featured_image);
-const featuredIndex = featuredPost ? sortedPosts.indexOf(featuredPost) : -1;
-
-// Get remaining posts (exclude featured if found, limit to 6 for grid)
-const gridPosts = sortedPosts.filter((_, i) => i !== featuredIndex).slice(0, 6);
-
-// Total posts shown = featured (if any) + grid posts
-const totalShown = (featuredPost ? 1 : 0) + gridPosts.length;
-const hasMorePosts = sortedPosts.length > totalShown;
-
-// Fetch tags for featured post (bylines are already hydrated by getEmDashCollection)
-let featuredTags: Array<{ slug: string; label: string }> = [];
-const featuredBylines = featuredPost?.data.bylines ?? [];
-if (featuredPost) {
-	const tags = await getEntryTerms("posts", featuredPost.data.id, "tag");
-	featuredTags = tags.map((t) => ({ slug: t.slug, label: t.label }));
-}
-
-// Fetch tags for grid posts (bylines are already hydrated by getEmDashCollection)
-const gridPostsWithTags = await Promise.all(
-	gridPosts.map(async (post) => {
-		const tags = await getEntryTerms("posts", post.data.id, "tag");
-		const bylines = post.data.bylines ?? [];
-		return {
-			post,
-			tags: tags.map((t) => ({ slug: t.slug, label: t.label })),
-			bylines,
-		};
-	})
-);
-
-// Format date helper
-function formatDate(date: Date | null | undefined) {
-	if (!date) return null;
-	return date.toLocaleDateString("en-US", {
-		year: "numeric",
-		month: "long",
-		day: "numeric",
-	});
-}
+const featuredDishes = sortEntries(menuItems)
+	.filter((item) => item.data.featured)
+	.slice(0, 6);
 ---
 
-<Base title={siteTitle} description={siteTagline}>
+<Base
+	title={page?.data.title || savorSite.name}
+	description={page?.data.intro || savorSite.tagline}
+>
 	{
-		posts.length === 0 ? (
-			<section class="empty-state">
-				<h2>No posts yet</h2>
-				<p>Create your first post in the admin panel.</p>
-				<a href="/_emdash/admin/content/posts/new" class="btn">
-					Create a post
-				</a>
-			</section>
-		) : (
-			<div class="home-content">
-				{/* Featured Post - Side by side */}
-				{featuredPost && (
-					<section class="featured-section">
-						<div class="featured-grid">
-							<a href={`/posts/${featuredPost.id}`} class="featured-image-link">
-								<div class="featured-image">
-									<Image image={featuredPost.data.featured_image} />
-								</div>
-							</a>
-							<div class="featured-content">
-								<div class="featured-meta">
-									{featuredBylines.length > 0 && (
-										<>
-											<div class="featured-bylines">
-												{featuredBylines.slice(0, 2).map((credit, index) => (
-													<>
-														{index > 0 && <span class="byline-sep">,</span>}
-														<span class="featured-byline">
-															{credit.byline.avatarMediaId && (
-																<img
-																	src={`/_emdash/api/media/file/${credit.byline.avatarMediaId}`}
-																	alt={credit.byline.displayName}
-																	class="featured-byline-avatar"
-																/>
-															)}
-															<span class="featured-byline-name">
-																{credit.byline.displayName}
-															</span>
-														</span>
-													</>
-												))}
-												{featuredBylines.length > 2 && (
-													<span class="byline-more">
-														+{featuredBylines.length - 2}
-													</span>
-												)}
-											</div>
-											<span class="meta-dot" />
-										</>
-									)}
-									{formatDate(featuredPost.data.publishedAt) && (
-										<time>{formatDate(featuredPost.data.publishedAt)}</time>
-									)}
-									<span class="meta-dot" />
-									<span>
-										{getReadingTime(featuredPost.data.content)} min read
-									</span>
-								</div>
-								<a
-									href={`/posts/${featuredPost.id}`}
-									class="featured-title-link"
-								>
-									<h1 class="featured-title">{featuredPost.data.title}</h1>
-								</a>
-								{featuredPost.data.excerpt && (
-									<p class="featured-excerpt">{featuredPost.data.excerpt}</p>
-								)}
-								{featuredTags.length > 0 && (
-									<div class="featured-tags">
-										{featuredTags.map((tag) => (
-											<a href={`/tag/${tag.slug}`} class="featured-tag">
-												{tag.label}
-											</a>
-										))}
-									</div>
-								)}
-							</div>
-						</div>
-					</section>
-				)}
+		page ? (
+			<>
+				<PageHero
+					eyebrow={page.data.eyebrow}
+					title={page.data.headline || page.data.title}
+					intro={page.data.intro}
+					image={page.data.hero_image}
+					primaryLabel={page.data.primary_cta_label}
+					primaryUrl={page.data.primary_cta_url}
+					secondaryLabel={page.data.secondary_cta_label}
+					secondaryUrl={page.data.secondary_cta_url}
+				/>
 
-				{/* Latest Posts */}
-				{gridPostsWithTags.length > 0 && (
-					<section class="posts-section">
-						<header class="section-header">
-							<h2 class="section-title">Latest</h2>
-							{hasMorePosts && (
-								<a href="/posts" class="section-link">
-									View all
-								</a>
-							)}
-						</header>
-						<div class="posts-grid">
-							{gridPostsWithTags.map(({ post, tags, bylines }) => (
-								<PostCard
-									title={post.data.title ?? "Untitled"}
-									excerpt={post.data.excerpt}
-									featuredImage={post.data.featured_image}
-									href={`/posts/${post.id}`}
-									date={post.data.publishedAt ?? undefined}
-									readingTime={getReadingTime(post.data.content)}
-									tags={tags}
-									bylines={bylines}
-								/>
+				<AwardRibbon awards={sortEntries(awards)} />
+
+				<section class="home-story section-shell">
+					<div class="section-heading">
+						<p class="eyebrow">Real Food, Made Fresh</p>
+						<h2>Italian American favorites, intimate rooms, and a team that knows how to host.</h2>
+					</div>
+					<div class="home-story__grid">
+						<div class="surface-card home-story__copy">
+							<ul class="home-story__highlights">
+								{homeHighlights.map((item) => <li>{item}</li>)}
+							</ul>
+							{page.data.body && <PortableText value={page.data.body} />}
+						</div>
+						<div class="home-story__gallery">
+							{homeMoments.map((image) => (
+								<div class="surface-card home-story__image">
+									<img src={image.src} alt={image.alt} loading="lazy" />
+								</div>
 							))}
 						</div>
-					</section>
-				)}
-			</div>
+					</div>
+				</section>
+
+				<MenuBoard
+					sections={[
+						{
+							title: "Dining Room Favorites",
+							description:
+								"A few of the house favorites guests come back for, from fresh pasta to signature starters.",
+							items: featuredDishes,
+						},
+					]}
+				/>
+
+				<QuoteGrid items={sortEntries(testimonials).slice(0, 3)} />
+
+				<section class="home-events section-shell">
+					<div class="surface-card home-events__card">
+						<div>
+							<p class="eyebrow">Private Events</p>
+							<h2>Host showers, rehearsal dinners, repasts, birthdays, and business dinners at Savor.</h2>
+							<p>
+								Our experienced team works closely with you on the room, the pacing, and a menu that fits the occasion.
+							</p>
+						</div>
+						<div class="home-events__actions">
+							<a class="button" href="/privateeventvenu/">Private Events</a>
+							<a class="button button-secondary" href="/businessprivateeventvenue/">
+								Corporate Events
+							</a>
+						</div>
+					</div>
+				</section>
+
+				<StaffHighlights items={sortEntries(teamMembers)} />
+
+				<ContactPanel />
+			</>
+		) : (
+			<section class="section-shell">
+				<div class="empty-state surface-card">
+					<h1>Open the EmDash admin to finish setup.</h1>
+					<p>This site expects the Savor seed content to be applied to the connected database.</p>
+					<a class="button" href="/_emdash/admin">Open Admin</a>
+				</div>
+			</section>
 		)
 	}
 </Base>
 
 <style>
-	.home-content {
-		max-width: var(--wide-width);
-		margin: 0 auto;
-		padding: var(--spacing-16) var(--spacing-6);
-	}
-
-	/* Featured Section - Side by side */
-	.featured-section {
-		margin-bottom: var(--spacing-16);
-	}
-
-	.featured-grid {
+	.home-story__grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: var(--spacing-8);
-		align-items: center;
+		grid-template-columns: minmax(0, 1fr) minmax(320px, 0.95fr);
+		gap: 1rem;
 	}
 
-	.featured-image-link {
-		grid-column: 1 / 3;
-		display: block;
-		/* Extend to viewport edge, but cap at -6rem minimum extension */
-		margin-left: min(
-			-6rem,
-			calc(-1 * (var(--spacing-6) + (100vw - var(--wide-width)) / 2))
-		);
+	.home-story__copy {
+		display: grid;
+		gap: 1.2rem;
 	}
 
-	.featured-image {
+	.home-story__highlights {
+		display: grid;
+		gap: 0.75rem;
+		padding-left: 1rem;
+		color: var(--color-ink);
+	}
+
+	.home-story__gallery {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+	}
+
+	.home-story__image {
+		padding: 0;
 		overflow: hidden;
-		border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-		background: var(--color-surface);
 	}
 
-	.featured-image img {
+	.home-story__image:first-child {
+		grid-column: 1 / -1;
+	}
+
+	.home-story__image img {
 		width: 100%;
-		height: auto;
-		aspect-ratio: 4 / 3;
+		height: 100%;
 		object-fit: cover;
-		transition: transform 0.4s ease;
+		display: block;
 	}
 
-	.featured-image-link:hover .featured-image img,
-	.featured-grid:has(.featured-title-link:hover) .featured-image img {
-		transform: scale(1.02);
-	}
-
-	.featured-content {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-4);
-	}
-
-	.featured-meta {
-		display: flex;
-		align-items: center;
-		flex-wrap: wrap;
-		column-gap: var(--spacing-3);
-		row-gap: var(--spacing-1);
-		font-size: var(--font-size-sm);
-		color: var(--color-muted);
-	}
-
-	.meta-dot {
-		width: 3px;
-		height: 3px;
-		border-radius: 50%;
-		background: var(--color-muted);
-	}
-
-	/* Featured bylines */
-	.featured-bylines {
-		display: flex;
-		align-items: center;
-		gap: 2px;
-	}
-
-	.featured-byline {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--spacing-2);
-	}
-
-	.featured-byline-avatar {
-		width: var(--avatar-size-md);
-		height: var(--avatar-size-md);
-		border-radius: 50%;
-		object-fit: cover;
-	}
-
-	.featured-byline-name {
-		font-weight: 500;
-		color: var(--color-text-secondary);
-	}
-
-	.byline-sep {
-		color: var(--color-muted);
-		margin-right: 2px;
-	}
-
-	.byline-more {
-		font-size: var(--font-size-xs);
-		color: var(--color-muted);
-		margin-left: 2px;
-	}
-
-	.featured-title-link {
-		text-decoration: none;
-		color: inherit;
-	}
-
-	.featured-title {
-		font-size: clamp(var(--font-size-2xl), 4vw, var(--font-size-4xl));
-		font-weight: 700;
-		line-height: var(--leading-tight);
-		letter-spacing: var(--tracking-tight);
-		transition: color var(--transition-fast);
-	}
-
-	.featured-title-link:hover .featured-title,
-	.featured-grid:has(.featured-image-link:hover) .featured-title {
-		color: var(--color-accent);
-	}
-
-	.featured-excerpt {
-		font-size: var(--font-size-lg);
-		line-height: var(--leading-relaxed);
-		color: var(--color-text-secondary);
-	}
-
-	.featured-tags {
+	.home-events__card {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--spacing-2);
-		margin-top: var(--spacing-2);
-	}
-
-	.featured-tag {
-		display: inline-block;
-		padding: var(--spacing-1) var(--spacing-3);
-		font-size: var(--font-size-sm);
-		color: var(--color-text-secondary);
-		background: var(--color-surface);
-		border-radius: var(--radius);
-		text-decoration: none;
-		transition:
-			color var(--transition-fast),
-			background var(--transition-fast);
-	}
-
-	.featured-tag:hover {
-		color: var(--color-text);
-		background: var(--color-border);
-	}
-
-	/* Section header */
-	.section-header {
-		display: flex;
 		justify-content: space-between;
-		align-items: baseline;
-		margin-bottom: var(--spacing-8);
-		padding-bottom: var(--spacing-4);
-		border-bottom: 1px solid var(--color-border-subtle);
-	}
-
-	.section-title {
-		font-size: var(--font-size-sm);
-		font-weight: 500;
-		text-transform: uppercase;
-		letter-spacing: var(--tracking-wider);
-		color: var(--color-muted);
-	}
-
-	.section-link {
-		font-size: var(--font-size-sm);
-		color: var(--color-accent);
-		text-decoration: none;
-		transition: color var(--transition-fast);
-	}
-
-	.section-link:hover {
-		color: var(--color-accent-hover);
-	}
-
-	/* Posts Grid */
-	.posts-section {
-	}
-
-	.posts-grid {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: var(--spacing-12) var(--spacing-8);
-	}
-
-	/* Empty State */
-	.empty-state {
-		display: flex;
-		flex-direction: column;
+		gap: 1.5rem;
 		align-items: center;
-		gap: var(--spacing-3);
-		text-align: center;
-		padding: var(--spacing-20) var(--spacing-6);
-		max-width: 400px;
-		margin: 0 auto;
 	}
 
-	.empty-state h2 {
-		font-size: var(--font-size-2xl);
-		font-weight: 600;
-	}
-
-	.empty-state p {
+	.home-events__card p:last-child {
+		max-width: 54ch;
 		color: var(--color-muted);
 	}
 
-	.btn {
-		display: inline-block;
-		margin-top: var(--spacing-4);
-		padding: var(--spacing-3) var(--spacing-6);
-		background: var(--color-accent);
-		color: var(--color-on-accent);
-		text-decoration: none;
-		border-radius: var(--radius);
-		font-size: var(--font-size-sm);
-		font-weight: 500;
-		transition: background var(--transition-fast);
+	.home-events__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.85rem;
 	}
 
-	.btn:hover {
-		background: var(--color-accent-hover);
-	}
-
-	/* Responsive */
-	@media (max-width: 900px) {
-		.home-content {
-			padding: var(--spacing-6) var(--spacing-4) var(--spacing-12);
-		}
-
-		.featured-image-link {
-			margin-left: 0;
-		}
-
-		.featured-grid {
+	@media (max-width: 920px) {
+		.home-story__grid {
 			grid-template-columns: 1fr;
-			gap: var(--spacing-6);
-		}
-
-		.featured-image {
-			border-radius: var(--radius-lg);
-		}
-
-		.featured-image img {
-			aspect-ratio: 16 / 9;
-		}
-
-		.posts-grid {
-			grid-template-columns: repeat(2, 1fr);
-			gap: var(--spacing-8) var(--spacing-6);
 		}
 	}
 
-	@media (max-width: 600px) {
-		.featured-title {
-			font-size: var(--font-size-2xl);
-		}
-
-		.posts-grid {
+	@media (max-width: 720px) {
+		.home-story__gallery {
 			grid-template-columns: 1fr;
-			gap: var(--spacing-8);
 		}
 	}
 </style>

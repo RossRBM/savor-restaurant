@@ -1,0 +1,85 @@
+---
+interface AwardCard {
+	title?: string;
+	image_url?: string;
+	link_url?: string;
+}
+
+interface Props {
+	awards: Array<{ data: AwardCard }>;
+}
+
+const { awards } = Astro.props;
+---
+
+{
+	awards.length > 0 && (
+		<section class="award-ribbon section-shell">
+			<div class="section-heading">
+				<p class="eyebrow">Recognized Across Somerset County</p>
+				<h2>Favorite local dining for celebrations, dinner dates, and private events.</h2>
+			</div>
+			<div class="award-ribbon__grid">
+				{awards.map(({ data }) => {
+					const content = (
+						<div class="award-ribbon__card surface-card">
+							{data.image_url && (
+								<img src={data.image_url} alt={data.title || "Savor award"} loading="lazy" />
+							)}
+							<p>{data.title}</p>
+						</div>
+					);
+
+					return data.link_url ? (
+						<a href={data.link_url} class="award-ribbon__link" target="_blank" rel="noreferrer">
+							{content}
+						</a>
+					) : (
+						content
+					);
+				})}
+			</div>
+		</section>
+	)
+}
+
+<style>
+	.award-ribbon__grid {
+		display: grid;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		gap: 1rem;
+	}
+
+	.award-ribbon__link {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.award-ribbon__card {
+		height: 100%;
+		text-align: center;
+		padding: 1.2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.9rem;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.award-ribbon__card img {
+		max-width: 100%;
+		height: 88px;
+		object-fit: contain;
+	}
+
+	.award-ribbon__card p {
+		font-size: 0.88rem;
+		color: var(--color-muted);
+	}
+
+	@media (max-width: 900px) {
+		.award-ribbon__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+</style>
